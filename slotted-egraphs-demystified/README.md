@@ -49,7 +49,7 @@ In order to achieve this they use the "hashcons", which is supposed to map each 
 In Slotted E-Graphs we want a stronger notion of deduplication:
 If two e-nodes (or terms) are equal up to renaming[^bij] of variables, they should be represented by the same parameterized e-class.
 
-The problem with the hashcons is that two e-nodes that are equal up to renaming can definitely still hash to different values. Think `hash("c7(x, y)") != hash("c7(a, b)")`,
+The problem with the hashcons is that two e-nodes that are equal up to renaming can definitely still hash to different values. Think `hash("c7(x) + c2(y)") != hash("c7(a) + c2(b))")`,
 so we require a "name-independent representation" of e-nodes (called its *shape*) that we can use for the hashcons.
 
 To compute the shape of an e-node, we rename all variables to "numeric variables" (`0`, `1`, ...) based on the order of their first occurrence.

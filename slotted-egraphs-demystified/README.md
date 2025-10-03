@@ -81,7 +81,7 @@ We remember how we eliminated `c1` using this final equation `c1(0) := c0(0)`. W
 
 This simplification enables another one:
 The e-classes `c2` and `c3` now each contain an e-node with shape `c0(0) - c0(1)`, that we will detect when populating the hashcons.
-From these e-nodes we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.[^shape-compute]
+From these e-nodes we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.
 This equation is a bit more interesting than the one we had before. We have equated the e-classes `c2` and `c3`, but there's a *literal* twist:
 The variable `x` in `c2`, corresponds to the variable `y` in `c3` and vice versa. Hence we cannot equate `c2(0,1) = c3(0,1)`, but we have to be careful to respect this renaming.
 
@@ -126,6 +126,5 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^bij]: Technically, it would be "equal up to a bijective(!) renaming". As x-y and x-x should not be considered "equal up to renaming".
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context-free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
-[^shape-compute]: We obtain for example `c2(0,1)` as follows: `c2(x, y)` contains the e-node `c0(x) - c1(y)`, and during shape computation we remember the renaming that we need to apply to obtain the shape `c0(0) - c1(1)`. In this case `[x := 0, y := 1]` maps the e-node `c0(x) - c1(y)` to its shape `c0(0) - c1(1)`. Applying this renaming on `c2(x,y)` yields the final `c2(0,1)`.
 [^groups]: This is using simplified assumptions: In chapter III, we will see that different applications of a p-class will not always yield different e-classes.
 [^impl]: In the current implementation, we actually store `unionfind[c3] = (c2, [x := y, y := x])`, as it uses canonical names (`x, y`) instead of canonical positions (`0, 1`). But that's a matter of taste.

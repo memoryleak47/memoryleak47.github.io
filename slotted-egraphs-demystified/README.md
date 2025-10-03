@@ -17,9 +17,8 @@ c2 := y
 c3 := 2*c2 | c2 + c2
 c4 := c1 + c3
 ```
-[^grammar]
 
-Every `c0`, ..., `c4` corresponds to an "e-class", whereas the partial terms on the right `x`, `2*c0`, ... correspond to e-nodes.
+Every `c0`, ..., `c4` corresponds to an "e-class", whereas the partial terms on the right `x`, `2*c0`, ... correspond to e-nodes. [^grammar]
 
 In a slotted e-graph, this remains the same -- however classes get parameterized by their variables (slots):
 So the same e-graph would now be:

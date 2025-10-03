@@ -49,7 +49,7 @@ so we have to "get rid of the names" before putting our e-nodes into the hashcon
 For this, we rename all variables to numbers: We iterate through the e-node (or term) from left to right, and each new variable we encounter will be renamed to `$0`, the next one `$1`, etc.
 In this sense, both `x+y` and `a+b` would get the output `$0+$1`. We call this "nameless" representation the "shape" of an e-node (or term).
 
-If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge their e-classes.[^one-var-eclass]
+If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge their e-classes, `c1` and `c3`.[^one-var-eclass]
 
 To explain the reasoning why this works, we rewrite both `c1` and `c3` to the common node `$0`:
 We know that `c1 = x = $0 [$0 := x]`, and `c3 = y = $0 [$0 := y]`. The decomposition `x = $0 [$0 := x]` comes from computing the shape of the e-node `x`.

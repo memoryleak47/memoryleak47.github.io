@@ -59,7 +59,7 @@ which we can simplify to `c3 = c1 [x := y]`.
 It's worth pointing out that we get an extra renaming `[x := y]` out of this process.
 This is important in general, as both `c1` and `c3` could have many variables; it's important to know which one corresponds to which.
 
-So now, we can simplify our slotted e-graph:
+So now, we can simplify our slotted e-graph, by replacing all occurrences of `c3` with `c1 [x := y]:
 
 ```
 c0 := 2

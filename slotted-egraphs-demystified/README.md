@@ -1,8 +1,8 @@
 Slotted E-Graphs demystified
 ============================
 
-In this blog post I attempt (!) to give the simplest explanation of slotted e-graphs that I can come up with.
-For that we'll start in Chapter I with some simplifying assumptions, and generalize the system to general slotted e-graphs in Chapters II and III.
+In this blog post I attempt to give the simplest explanation of slotted e-graphs that I can come up with.
+For that we'll start in Chapter I with a simplified version, and generalize it to general slotted e-graphs in Chapters II and III.
 
 # Chapter I - From E-Graph to Slotted E-Graph
 First, what is an e-graph?
@@ -29,14 +29,13 @@ c3(x, y) := - c2(x, y) | c1(y) - c0(x)
 
 It's worth pointing out that variable names chosen in every e-class have no particular meaning, and can be renamed at any point.
 We could for example re-define `c2` equivalently as `c2(f, d) := c0(f) - c1(d)` if we wanted to.
-
 This is one crucial property of variables: The names you choose do not matter!
 
 ### Deduplication via Hashcons and Shapes
 
 In general, E-graphs want to prevent storing the same e-node in multiple e-classes.
 In order to achieve this, there is the "hashcons": the global registry mapping each e-node to the e-class that contains it.
-This way we guarantee that any e-node is just contained in at most one e-class.
+This way we guarantee that any e-node is contained in at most one e-class.
 
 In Slotted E-Graphs we want an even stronger notion of deduplication:
 If two terms are equal up to renaming[^bij] of variables, they should be represented by the same e-class.
@@ -51,11 +50,13 @@ In general, we can compute the shape by iterating through the e-node from left t
 ### Continuing the example
 
 If we now come back to the example from before, and populate the hashcons in the way we have just described,
-we will notice that both `x` and `y` will result in the shape `0`, which means that we have to merge their e-classes, `c0` and `c1`.[^one-var-eclass]
-Or formally: We know that both `c0` and `c1` are able to represent `0`, namely via `c0(0) = 0` and `c1(0) = 0`,
+we will notice that both `x` and `y` will result in the shape `0`, yielding a "hashcons-collision".
+Our hashcons-invariant forces us to map `hashcons[0]` to both `c0` and `c1`, which means that we have to merge these e-classes.[^one-var-eclass]
+
+How do we know that these e-classes should be merged? We know that both `c0` and `c1` are able to represent `0`, namely via `c0(0) = 0` and `c1(0) = 0`,
 and from that we can infer `c0(0) = c1(0)`.
 
-So now, we can simplify our slotted e-graph, by replacing all occurrences of `c1(0)` with `c0(0)`, where `0` matches against any variable:
+So now we can simplify our slotted e-graph, by replacing all occurrences of `c1(0)` with `c0(0)`, where `0` matches against any variable:
 
 ```
 c0(x) := x
@@ -68,7 +69,7 @@ c1(x) := c0(x)
 ### "Re-ordering" equations
 
 This simplification enables another one:
-The e-classes `c2` and `c3` now each contain an e-node with shape `c0(0) - c0(1)`, that we will find when populating the hashcons.
+The e-classes `c2` and `c3` now each contain an e-node with shape `c0(0) - c0(1)`, that we will detect when populating the hashcons.
 From that we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.[^shape-compute]
 Note that this equation `c2(0,1) = c3(1,0)` is a very different equation than `c2(0,1) = c3(0,1)`; as we have to flip the variables!
 

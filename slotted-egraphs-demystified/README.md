@@ -51,7 +51,7 @@ If we now populate our hashcons using these shapes, we will notice that both `x`
 Or formally: We know that both `c0` and `c1` are able to represent `0`, namely via `c0(0) = 0` and `c1(0) = 0`,
 and from that we can infer `c0(0) = c1(0)`.
 
-So now, we can simplify our slotted e-graph, by replacing all occurrences of `c3(0)` with `c1(0)`, where `0` matches against any variable.
+So now, we can simplify our slotted e-graph, by replacing all occurrences of `c1(0)` with `c0(0)`, where `0` matches against any variable:
 
 ```
 c0(x) := x

@@ -20,8 +20,8 @@ c5 := c2 + c4
 ```
 
 Every `c0`, ..., `c5` corresponds to an "e-class", whereas the partial terms on the right (eg. `c0 * c1`) correspond to "e-nodes". [^grammar]
-In a slotted e-graph however, every e-class is parameterized by some variables (slots).
-For an e-class `c0` that contains a variable `x`. We write `c0[x := a]` to express this e-class where we insert the variable `a` into the slot `x`.[^subst]
+In a slotted e-graph however, every e-class is parameterized by some variables (aka slots).
+For an e-class `c0` that contains a variable `x`. We write `c0[x := a]` to express this e-class where we insert the variable `a` into the variable `x`.[^subst]
 
 ```
 c0 := 2
@@ -44,7 +44,7 @@ If two terms are equal up to renaming[^bij] of variables, they should be represe
 The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x+y") != hash("a+b")`, so we can't simply take the hashcons as before.
 In order to solve this issue, we are required to normalize our names in a sense that is compatible to hashing.
 
-For this, we rename all slots to numbers: we identify `$0` with the left-most-occurring variable, then `$1` for the next variable, etc.
+For this, we rename all variables to numbers: we identify `$0` with the left-most-occurring variable, then `$1` for the next variable, etc.
 In this sense, both `x+y` and `a+b` would get the output `$0 + $1`. We call this "nameless" representation the "shape" of an e-node or term.
 
 If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge their e-classes.[^one-var-eclass]
@@ -55,7 +55,7 @@ As our renamings are bijections, we can infer `c1 [x := $0] = $0` and `c3 [y := 
 which we can simplify to `c3 = c1 [x := y]`.
 
 It's worth pointing out that we get an extra renaming `[x := y]` out of this process.
-This is important in general, as both `c1` and `c3` could have many slots; it's important to know which one corresponds to which.
+This is important in general, as both `c1` and `c3` could have many variables; it's important to know which one corresponds to which.
 
 So now, we can simplify our slotted e-graph:
 

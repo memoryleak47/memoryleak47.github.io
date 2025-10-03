@@ -1,3 +1,5 @@
+# This is not written yet! WIP
+
 # Chapter II - Redundancies (and incidentally also binders)
 So, we now have a rough understand how the slotted e-graphs functions.
 

@@ -1,3 +1,5 @@
+# This is not written yet! WIP
+
 # Chapter III - Symmetries
 The next (and last) annoying case is that we might learn that `x+y = y+x`.
 This is weird, as both sides of the equation are equal up to renaming.

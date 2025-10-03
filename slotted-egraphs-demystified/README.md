@@ -28,16 +28,16 @@ c2(x, y) := c0(x) - c1(y)
 c3(x, y) := - c2(x, y) | c1(y) - c0(x)
 ```
 
-One can visualize a slotted e-class (eg. `c3`) as a function, that takes in some names (`x, y`) and yields a set of terms `- c2(x, y)` unioned with `c1(y) - c0(x)`.
-These e-class functions recursively call each other to build up all the terms represented by an e-class.
+One can visualize a parameterized e-class (eg. `c3`) as a function, that takes in some inputs (`x, y`) and yields a set of terms `- c2(x, y)` unioned with `c1(y) - c0(x)`.
+These parameterized e-class functions recursively call each other to build up all the terms they represent.
 
-As slotted e-classes can be seen as functions, the variable names (i.e. function parameters) chosen in every e-class have no particular meaning, and can be renamed at any point.
+It's worth pointing out that a parameterized e-class (`c0`) spans infinitely many disjoint equivalence classes (e-class): `c0(a)`, `c0(b)`, ...; one e-class per "application" of the parameterized e-class.[^groups]
+Thus importantly, `c0` itself can represent all variables `a, b, c, ...`; and thus does not qualify as an e-class (because `a` might not be equal to `b`).
+Only an "application" of a parameterized e-class `c0(a)` actually yields an "equivalence-class" in the usual sense.
+
+Finally, As slotted e-classes can be seen as functions, the variable names (i.e. function parameters) chosen in every e-class have no particular meaning, and can be renamed at any point.
 We could for example re-define `c2` equivalently as `c2(f, d) := c0(f) - c1(d)` if we wanted to.
 This is one crucial property of variables: The names you choose do not matter!
-
-Further, it's worth noting that each id `c0` spans infinitely many different e-classes `c0(x)`, `c0(y)`, ...,
-that all represent disjoint sets of terms.
-[TODO: clarify e-class vs. applied e-class? What do I call "e-class"? I think an Applied Id should be an actual e-class. c0 itself does not only represent equivalent things.]
 
 ### Deduplication via Hashcons and Shapes
 
@@ -121,3 +121,4 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context-free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
 [^shape-compute]: We obtain for example `c2(0,1)` as follows: `c2(x, y)` contains the e-node `c0(x) - c1(y)`, and during shape computation we remember the renaming that we need to apply to obtain the shape `c0(0) - c1(1)`. In this case `[x := 0, y := 1]` maps the e-node `c0(x) - c1(y)` to its shape `c0(0) - c1(1)`. Applying this renaming on `c2(x,y)` yields the final `c2(0,1)`.
+[^groups]: This is using simplified assumptions: In chapter III, we will see that different applications of a p-class will not always yield different e-classes.

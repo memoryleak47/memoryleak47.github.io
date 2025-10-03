@@ -57,6 +57,8 @@ This is important in general, as there could be many slots on the left, and many
 
 So now, we can simplify our slotted e-graph:
 
+TODO: I don't like that I'm writing `c0(x)` when I should just be writing `c0`. Can I all of this stuff, without writing the "\_(x, y)" part?
+
 ```
 c0(x) := x
 c1(x) := 2*c0(x) | c0(x) + c0(x)
@@ -81,25 +83,7 @@ c3(y) := c2(x) [x := y]
 We have now separated out, the bottom equations. They correspond to the "unionfind" in an e-graph.
 Whenever you merge two classes, one will be the "canonical" one (eg. `c0`), and the other one (eg. `c2`) will just point to that canonical class.
 It's worth noting that in a slotted e-graph, these unionfind-"pointers" are annotated with renamings.
-This has an interesting implication about path compression. If you have have the following example:
-
-```
-c0(a, b) := ...
-
-c1(x, y) := c0(a, b) [a := x, b := y]
-c2(p, q) := c1(x, y) [x := p, y := q]
-```
-
-Then you can simplify them by composing the renamings:
-`c2(p, q) = c1(x, y) [x := p, y := q] = (c0(a, b) [a := x, b := y]) [x := p, y := q] = c0(a, b) [a := p, b := q]`.
-To obtain:
-
-```
-c0(a, b) := ...
-
-c1(x, y) := c0(a, b) [a := x, b := y]
-c2(p, q) := c0(a, b) [a := q, b := p]
-```
+This has an interesting implication: If you apply path compression in a slotted unionfind, you have to compose the renamings.
 
 # Redundancies (and incidentally also binders)
 So, we now have a rough understand how the slotted e-graphs functions.

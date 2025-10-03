@@ -3,7 +3,6 @@ Slotted E-Graphs demystified
 
 In this blog post I attempt (!) to give the simplest explanation of slotted e-graphs that I can come up with.
 For that we'll start in Chapter I with some simplifying assumptions, and generalize the system to general slotted e-graphs in Chapters II and III.
-This blog post will focus more on conveying the idea, than about being precise in-terms of data structures.
 
 # Chapter 1 - From E-Graph to Slotted E-Graph
 First, what is an e-graph?

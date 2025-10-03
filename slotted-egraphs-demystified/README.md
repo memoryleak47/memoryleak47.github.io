@@ -52,6 +52,9 @@ Similarly we get `c2(y) [y := 0] = 0` and thus `c0(x) [x := 0] = c2(y) [y := 0]`
 `c0(x) = c2(y) [y := 0] [0 := x] = c2(y) [y := x]`.
 So in short, after equating `c0(x)` and `c2(y)` using the "common node" 0, we obtain the equation `c0(x) = c2(y) [y := x]`.
 
+It's worth pointing out that we get an extra renaming "[y := x]" out of this process.
+This is important in general, as there could be many slots on the left, and many on the right. It's important to know which one corresponds to which.
+
 So now, we can simplify our slotted e-graph:
 
 ```
@@ -59,6 +62,8 @@ c0(x) := x
 c1(x) := 2*c0(x) | c0(x) + c0(x)
 c3(y) := 2*c0(y) | c0(y) + c0(y)
 c4(x, y) := c1(x) + c3(y)
+
+c2(y) := c0(x) [x := y]
 ```
 
 And then by again using the hashcons, `2*c0(x)` and `2*c0(y)` collide at the shape `2*c0(0)`. And we similar (same reasoning as before).
@@ -68,9 +73,33 @@ TODO: `2` looks like a normalized slot.
 c0(x) := x
 c1(x) := 2*c0(x) | c0(x) + c0(x)
 c4(x, y) := c1(x) + c1(y)
+
+c2(y) := c0(x) [x := y]
+c3(y) := c2(x) [x := y]
 ```
 
-TODO: mention slotted unionfind.
+We have now separated out, the bottom equations. They correspond to the "unionfind" in an e-graph.
+Whenever you merge two classes, one will be the "canonical" one (eg. `c0`), and the other one (eg. `c2`) will just point to that canonical class.
+It's worth noting that in a slotted e-graph, these unionfind-"pointers" are annotated with renamings.
+This has an interesting implication about path compression. If you have have the following example:
+
+```
+c0(a, b) := ...
+
+c1(x, y) := c0(a, b) [a := x, b := y]
+c2(p, q) := c1(x, y) [x := p, y := q]
+```
+
+Then you can simplify them by composing the renamings:
+`c2(p, q) = c1(x, y) [x := p, y := q] = (c0(a, b) [a := x, b := y]) [x := p, y := q] = c0(a, b) [a := p, b := q]`.
+To obtain:
+
+```
+c0(a, b) := ...
+
+c1(x, y) := c0(a, b) [a := x, b := y]
+c2(p, q) := c0(a, b) [a := q, b := p]
+```
 
 # Redundancies (and incidentally also binders)
 So, we now have a rough understand how the slotted e-graphs functions.

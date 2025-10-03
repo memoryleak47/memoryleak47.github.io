@@ -2,7 +2,10 @@ Slotted E-Graphs demystified
 ============================
 
 In this blog post I attempt to give a more concise and simple explanation of slotted e-graphs, than the one from our paper.
-For that we'll start in Chapter I with a simplified version of slotted e-graphs, and generalize it to general slotted e-graphs in Chapters II and III.
+For that we'll start in Chapter I with a simplified version of slotted e-graphs;
+and in Chapter II we will see what happens if you dare to equate `x-x = 0`;
+and finally in Chapter III we will see what happens if you dare to equate `x+y = y+x`.
+Interestingly, binders just "fall out for free" in Chapter II as a consequence of redundancies, so they do not come up in Chapter I.
 
 # Chapter I - From E-Graph to Slotted E-Graph
 First, what is an e-graph?

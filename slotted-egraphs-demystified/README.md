@@ -54,7 +54,7 @@ In general, we can compute the shape by iterating through the e-node from left t
 (To be clear, if a variable occurs multiple times, all occurrences will be renamed to the same numeric variable.)
 
 If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `0`, which means that we have to merge their e-classes, `c1` and `c3`.[^one-var-eclass]
-Or formally: We know that both `c1` and `c3` are able to represent `0`, i.e. using `c1(0) = 0` and `c3(0) = 0`,
+Or formally: We know that both `c1` and `c3` are able to represent `0`, namely via `c1(0) = 0` and `c3(0) = 0`,
 and from that we can infer `c1(0) = c3(0)`.
 
 Note: If the e-classes `c1` and `c3` would have had more variables, the resulting equation (eg. `c7(0, 1) = c9(1, 0)`) would have informed us, which variables from `c1` correspond to which variables from `c3`.

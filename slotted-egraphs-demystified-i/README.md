@@ -105,6 +105,6 @@ just like `c2(x, y) := c1(y, x)` and `c1(x, y) := c0(y, x)` implies `c2(x, y) = 
 [^bij]: Technically, it would be "equal up to a bijective(!) renaming". As x-y and x-x should not be considered "equal up to renaming".
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context-free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
-[^groups]: This is using simplified assumptions: In chapter III, we will see that different applications of a p-class will not always yield different e-classes.
+<!-- [^groups]: This is using simplified assumptions: In chapter III, we will see that different applications of a p-class will not always yield different e-classes. -->
 [^impl]: In the current implementation, we actually store `unionfind[c3] = (c2, [x := y, y := x])`, as it uses canonical names (`x, y`) instead of canonical positions (`0, 1`). But that's a matter of taste.
 [^termination]: Technically, for recursive e-classes these functions would not terminate, but I hope it's clear what I mean. Think of these sets as the smallest fixed-points under these equations.

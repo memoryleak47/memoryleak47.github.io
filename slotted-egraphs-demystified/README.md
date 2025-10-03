@@ -37,22 +37,22 @@ Note that as our slotted e-graph "came" from a conventional e-graph, we only use
 ## Deduplication via Hashcons
 
 In general, E-graphs do not want to store the same term in different classes.
-In order to achieve this, there is the "hashcons", the global registry expressing in which e-class an e-node is contained.
+In order to achieve this, there is the "hashcons": the global registry mapping each e-node to the e-class that contains it.
 This way we guarantee that any e-node is just contained in at most one e-class.
 
 In Slotted E-Graphs we want an even stronger notion of deduplication:
 If two terms are equal up to renaming[^bij] of variables, they should be represented by the same e-class.
 
-The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x + y") != hash("a + b")`,
+The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x+y") != hash("a+b")`,
 so we have to "get rid of the names" before putting our e-nodes into the hashcons:
 
-For this, we rename all variables to numbers: We iterate through the e-node from left to right, and each new variable we encounter will be renamed to `$0`, the next one `$1`, etc.
-In this sense, both `x + y` and `a + b` would get the output `$0 + $1`. We call this "nameless" representation the "shape" of an e-node or term.
+For this, we rename all variables to numbers: We iterate through the e-node (or term) from left to right, and each new variable we encounter will be renamed to `$0`, the next one `$1`, etc.
+In this sense, both `x+y` and `a+b` would get the output `$0+$1`. We call this "nameless" representation the "shape" of an e-node (or term).
 
 If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge their e-classes.[^one-var-eclass]
 
 To explain the reasoning why this works, we rewrite both `c1` and `c3` to the common node `$0`:
-We know that `c1 = x = $0 [$0 := x]`, and `c3 = y = $0 [$0 := y]`. The decomposition `x = $0 [$0 := x]` comes from computing the shape of x.
+We know that `c1 = x = $0 [$0 := x]`, and `c3 = y = $0 [$0 := y]`. The decomposition `x = $0 [$0 := x]` comes from computing the shape of the e-node `x`.
 As our renamings are bijections, we can infer `c1 [x := $0] = $0` and `c3 [y := $0] = $0` and thus,`c1 [x := $0] = c3 [y := $0]`,
 which we can simplify to `c3 = c1 [x := y]`.
 
@@ -71,7 +71,7 @@ c5 := c2[x := x] + c4[y := y]
 c3 := c1[x := y]
 ```
 
-And then by again using the hashcons, `c0 * c1[x := x]` and `c0 * c1[x := y]` collide at the shape `c0 * c1[x := $0]`. And we similarly merge them.
+And then by again using the hashcons, `c0 * c1[x := x]` and `c0 * c1[x := y]` collide at the shape `c0 * c1[x := $0]`[^confusing]. And we similarly merge them.
 
 ```
 c0 := 2
@@ -115,3 +115,4 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
 [^subst]: The syntax `[x := y]` is inspired from substitutions. However it's important to note that both `x` and `y` are forced to be a variable (= Slot), so you can't substitute using arbitrary terms or e-classes with this. (However, extending that would get us into Knuth-bendix territory, which is what we are looking at a bit.)
+[^confusing]: It might be confusing to declare the shape of `c0 * c1[x := x]` as `c0 * c1[x := $0]` as one might expect `c0 * c1[$0 := $0]`. But the "left" x and the "right" x, play a different role here. The "left" x is the variable that `c1` exposes, we can't rename that. `c1[$0 := $0]` makes no sense, as `c1` doesn't even contain `$0` so renaming it doesn't have any effect.

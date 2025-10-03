@@ -7,34 +7,28 @@ For that we'll start in Chapter I with some simplifying assumptions, and general
 # Chapter 1 - From E-Graph to Slotted E-Graph
 First, what is an e-graph?
 An e-graph stores a bunch of terms and equations among them, by grouping equivalent terms into equivalence classes ("e-classes").
-For example, we might represent the term `2*x + 2*y` (with some equations) like this:
+For example, we might represent the equal terms `-(x-y) = (y-x)` as follows:
 
 ```
-c0 := 2
-c1 := x
-c2 := c0 * c1 | c1 + c1
-c3 := y
-c4 := c0 * c3 | c3 + c3
-c5 := c2 + c4
+c0 := x
+c1 := y
+c2 := c0 - c1
+c3 := - c2 | c1 - c0
 ```
 
-Every `c0`, ..., `c5` corresponds to an "e-class", whereas the partial terms on the right (eg. `c0 * c1`) correspond to "e-nodes". [^grammar]
+Every `c0, ..., c4` corresponds to an "e-class", whereas the terms on the right (eg. `c0 - c1`) correspond to "e-nodes". [^grammar]
 In a slotted e-graph however, every e-class is parameterized by some variables (aka slots).
 
 ```
-c0 := 2
-c1(x) := x
-c2(x) := c0 * c1(x) | c1(x) + c1(x)
-c3(y) := y
-c4(y) := c0 * c3(y) | c3(y) + c3(y)
-c5(x, y) := c2(x) + c4(y)
+c0(x) := x
+c1(y) := y
+c2(x, y) := c0(x) - c1(y)
+c3(x, y) := - c2(x, y) | c1(y) - c0(x)
 ```
 
 It's worth pointing out that variable names chosen in every e-class have no particular meaning, and can be renamed at any point.
-We could for example re-define `c2` equivalently as:
-```
-c2(z) := c0 * c1(z) | c1(z) + c1(z)
-```
+We could for example re-define `c2` equivalently as `c2(f, d) := c0(f) - c1(d)` if you feel like it.
+
 This is one crucial property of variables: The names you choose never matter!
 
 ## Deduplication via Hashcons
@@ -53,38 +47,34 @@ To compute the shape of an e-node (or term), we rename all variables to "numeric
 In general, we can compute the shape by iterating through the e-node from left to right, and each new variable we encounter will be renamed to `0`, the next one `1`, etc.
 (To be clear, if a variable occurs multiple times, all occurrences will be renamed to the same numeric variable.)
 
-If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `0`, which means that we have to merge their e-classes, `c1` and `c3`.[^one-var-eclass]
-Or formally: We know that both `c1` and `c3` are able to represent `0`, namely via `c1(0) = 0` and `c3(0) = 0`,
-and from that we can infer `c1(0) = c3(0)`.
-
-Note: If the e-classes `c1` and `c3` would have had more variables, the resulting equation (eg. `c7(0, 1) = c9(1, 0)`) would have informed us, which variables from `c1` correspond to which variables from `c3`.
-This is crucial as `c7(0, 1) = c9(0, 1)` is a very different statement than `c7(0, 1) = c9(1, 0)`.
+If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `0`, which means that we have to merge their e-classes, `c0` and `c1`.[^one-var-eclass]
+Or formally: We know that both `c0` and `c1` are able to represent `0`, namely via `c0(0) = 0` and `c1(0) = 0`,
+and from that we can infer `c0(0) = c1(0)`.
 
 So now, we can simplify our slotted e-graph, by replacing all occurrences of `c3(0)` with `c1(0)`, where `0` matches against any variable.
 
 ```
-c0 := 2
-c1(x) := x
-c2(x) := c0 * c1(x) | c1(x) + c1(x)
-c4(y) := c0 * c1(y) | c1(y) + c1(y)
-c5(x, y) := c2(x) + c4(y)
+c0(x) := x
+c2(x, y) := c0(x) - c0(y)
+c3(x, y) := - c2(x, y) | c0(y) - c0(x)
 
-c3(x) := c1(x)
+c1(x) := c0(x)
 ```
 
-And then by again using the hashcons, `c0 * c1(x)` and `c0 * c1(y)` collide at the shape `c0 * c1(0)`.
-From that we infer the equation `c2(0) = c0 * c1(0) = c4(0)`, and replace `c4(0) = c2(0)`.
+## Cross-merges
 
-[TODO: maybe find an example with more variables (and "cross-merges")].
+And then by again using the hashcons, `c0(x) - c0(y)` and `c0(y) - c0(x)` collide at the shape `c0(0) - c0(1)`.
+From that we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.
+Note that this equation `c2(0,1) = c3(1,0)` is a very different equation than `c2(0,1) = c3(0,1)`; as we have to flip the variables!
+
+When now replacing, we end up with the following resulting slotted e-graph:
 
 ```
-c0 := 2
-c1(x) := x
-c2(x) := c0 * c1(x) | c1(x) + c1(x)
-c5(x, y) := c2(x) + c2(y)
+c0(x) := x
+c2(x, y) := - c2(y, x) | c0(x) - c0(y)
 
-c3(x) := c1(x)
-c4(x) := c2(x)
+c1(x) := c0(x)
+c3(x, y) := c2(y, x)
 ```
 
 ## The Unionfind

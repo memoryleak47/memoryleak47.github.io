@@ -64,6 +64,29 @@ c1(x) := 2*c0(x) | c0(x) + c0(x)
 c4(x, y) := c1(x) + c1(y)
 ```
 
+TODO: mention slotted unionfind.
+
+# Redundancies (and incidentally also binders)
+So, we now have a rough understand how the slotted e-graphs functions.
+
+However, there are a couple of cases that we simply ignored so far.
+Let's say we know that `x-x = 0`. This would require us to have an 
+
+# Symmetries
+The next (and last) annoying case is that we might learn that `x+y = y+x`.
+This is weird, as both sides of the equation are equal up to renaming.
+We might try to to "just store them as normal nodes":
+
+```
+c0(x) := x
+c1(x, y) := x+y | y+x
+```
+
+But this is not enough.
+If you know look up the term `a+b`, there's actually two valid outputs. Either `c1(a, b)` or `c1(b, a)`.
+Further, a (slotted) e-graph is supposed to "answer" equivalence questions, but if we get the outputs `c1(a, b)` and `c1(b, a)`, we really wouldn't know whether they are supposed to represent the same thing or not.
+It depends on whether the class has nodes like `x+y | y+x` or not.
+
 [^bij]: Technically, it would be "equal up to a bijective(!) renaming". As x-y and x-x should not be considered "equal up to renaming".
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^shape]: We call this a "shape" in the paper.

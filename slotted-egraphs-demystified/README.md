@@ -70,10 +70,10 @@ c1(x) := c0(x)
 
 This simplification enables another one:
 The e-classes `c2` and `c3` now each contain an e-node with shape `c0(0) - c0(1)`, that we will detect when populating the hashcons.
-From that we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.[^shape-compute]
+From these e-nodes we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.[^shape-compute]
 Note that this equation `c2(0,1) = c3(1,0)` is a very different equation than `c2(0,1) = c3(0,1)`; as we have to flip the variables!
 
-We then choose to replace each `c3(1,0)` with `c2(0,1)`, where again `0, 1` can match against any variables in the slotted e-graph:
+We then choose to replace `c3(1,0)` with `c2(0,1)` in the slotted e-graph, where again `0, 1` can match against any variables:
 
 ```
 c0(x) := x
@@ -85,10 +85,9 @@ c3(x, y) := c2(y, x)
 
 ### The Unionfind
 
-We have now separated out, the bottom equations. They correspond to the "unionfind" in an e-graph.
-Whenever you merge two classes, one will be the "canonical" one (eg. `c1`), and the other one (eg. `c3`) will just point to that canonical class.
-It's worth noting that in a slotted e-graph, these unionfind-"pointers" are annotated with renamings.
-This has an interesting implication: If you apply path compression in a slotted unionfind, you have to compose the renamings.
+Whenever you merge two classes, one will be the "canonical e-class" (in this case `c2`), and the other e-class (`c3`) will just point to that canonical e-class.
+This "pointer" `c3(x, y) := c2(y, x)` will be stored in a unionfind datastructure.
+In this case just with an extra layer of parameters to express in which way the slots get changed.
 
 # Chapter II - Redundancies (and incidentally also binders)
 So, we now have a rough understand how the slotted e-graphs functions.
@@ -114,4 +113,4 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^bij]: Technically, it would be "equal up to a bijective(!) renaming". As x-y and x-x should not be considered "equal up to renaming".
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context-free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
-[^shape-compute]: We obtain eg. `c2(0,1)`, as `c2(x, y)` contains the e-node `c0(x) - c1(y)`. During shape computation we remember the renaming that we compute. In this case `[x := 0, y := 1]`. Applying this renaming on `c2(x,y)` yields the final `c2(0,1)`.
+[^shape-compute]: We obtain for example `c2(0,1)` as follows: `c2(x, y)` contains the e-node `c0(x) - c1(y)`, and during shape computation we remember the renaming that we need to apply to obtain the shape `c0(0) - c1(1)`. In this case `[x := 0, y := 1]` maps the e-node `c0(x) - c1(y)` to its shape `c0(0) - c1(1)`. Applying this renaming on `c2(x,y)` yields the final `c2(0,1)`.

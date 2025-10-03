@@ -19,6 +19,15 @@ c4 := c1 + c3
 ```
 
 Every `c0`, ..., `c4` corresponds to an "e-class", whereas the partial terms on the right `x`, `2*c0`, ... correspond to e-nodes. [^grammar]
+In a slotted e-graph however, every e-class is parameterized by some variables (slots). For an e-class `c0` that contains a variable `x`. We write `c0[x := a]` to express this e-class where we insert `a` into `x`.
+
+```
+c0 := x
+c1 := 2*c0[x := x] | c0[x := x] + c0[x := x]
+c2 := y
+c3 := 2*c2[y := y] | c2[y := y] + c2[y := y]
+c4 := c1[x := x] + c3[y := y]
+```
 
 Now, e-graphs do not want to store the same term in different classes.
 In order to achieve this, there is the "hashcons", the global registry expressing where a "node" is contained.
@@ -35,7 +44,7 @@ In this sense, both `x+y` and `a+b` would get the output `0+1`.[^shape]
 
 If we now populate our hashcons, we will notice that both `x` and `y` will result in the shape `0`, which means that we have to merge these classes.[^one-var-eclass]
 
-To explain the reasoning why this works, we know that `c0 = x`, and further we can decompose `x = 0 [0 := x]`, where `[0 := x]` is a substitution replacing `0` with `x`. This looks stupid, but will be helpful ^^
+To explain the reasoning why this works, we know that `c0 = x`, and further we can decompose `x = 0 [0 := x]`, where `[0 := x]` is a renaming that renames `0` to `x`.[^subst] This looks stupid, but will be helpful ^^
 Simlarly, we know `c2 = y = 0 [0 := y]`. And from `c0 = 0 [0 := x]` we can infer `c0 [x := 0] = 0` as our renamings are bijections.
 Similarly we get `c2 [y := 0] = 0` and thus `c0 [x := 0] = c2 [y := 0]`. Again by bijection, we obtain
 `c0 = c2 [y := 0] [0 := x] = c2 [y := x]`.
@@ -48,20 +57,20 @@ So now, we can simplify our slotted e-graph:
 
 ```
 c0 := x
-c1 := 2*c0 | c0 + c0
+c1 := 2*c0[x := x] | c0[x := x] + c0[x := x]
 c3 := 2*c0[x := y] | c0[x := y] + c0[x := y]
-c4 := c1 + c3
+c4 := c1[x := x] + c3[y := y]
 
 c2 := c0[x := y]
 ```
 
-And then by again using the hashcons, `2*c0` and `2*c0[x := y]` collide at the shape `2*c0[x := 0]`. And we similarly merge them.
+And then by again using the hashcons, `2*c0[x := x]` and `2*c0[x := y]` collide at the shape `2*c0[x := 0]`. And we similarly merge them.
 TODO: `2` looks like a normalized slot. Also: I did forget to hashcons it.
 
 ```
 c0 := x
-c1 := 2*c0 | c0 + c0
-c4 := c1 + c1[x := y]
+c1 := 2*c0[x := x] | c0[x := x] + c0[x := x]
+c4 := c1[x := x] + c1[x := y]
 
 c2 := c0[x := y]
 c3 := c2[x := y]
@@ -85,7 +94,7 @@ We might try to to "just store them as normal nodes":
 
 ```
 c0 := x
-c1 := c0+c0[x := y] | c0[x := y]
+c1 := c0[x := x] + c0[x := y] | c0[x := y]
 ```
 
 But this is not enough.
@@ -97,3 +106,4 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^shape]: We call this a "shape" in the paper.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
+[^subst]: The syntax `[x := y]` is inspired from substitutions. However it's important to note that both `x` and `y` are forced to be a variable (= Slot), so you can't substitute using arbitrary terms or e-classes with this. (However, extending that would get us into Knuth-bendix territory, which is what we are looking at a bit.)

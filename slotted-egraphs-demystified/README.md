@@ -45,17 +45,17 @@ The problem now, is that two terms that are equal up to renaming can definitely 
 In order to solve this issue, we are required to normalize our names in a sense that is compatible to hashing.
 
 For this, we rename all slots to numbers: we identify `$0` with the left-most-occurring variable, then `$1` for the next variable, etc.
-In this sense, both `x+y` and `a+b` would get the output `$0 + $1`.[^shape]
+In this sense, both `x+y` and `a+b` would get the output `$0 + $1`. We call this "nameless" representation the "shape" of an e-node or term.
 
-If we now populate our hashcons, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge these classes.[^one-var-eclass]
+If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge their e-classes.[^one-var-eclass]
 
 To explain the reasoning why this works, we rewrite both `c1` and `c3` to the common node `$0`:
 We know that `c1 = x = $0 [$0 := x]`, and `c3 = y = $0 [$0 := y]`. The decomposition `x = $0 [$0 := x]` comes from computing the shape of x.
 As our renamings are bijections, we can infer `c1 [x := $0] = $0` and `c3 [y := $0] = $0` and thus,`c1 [x := $0] = c3 [y := $0]`,
-which we can simplify to `c3 = c1 [x := $0] [$0 := y] = c1 [x := y]`.
+which we can simplify to `c3 = c1 [x := y]`.
 
 It's worth pointing out that we get an extra renaming `[x := y]` out of this process.
-This is important in general, as there could be many slots on the left, and many on the right. It's important to know which one corresponds to which.
+This is important in general, as both `c1` and `c3` could have many slots; it's important to know which one corresponds to which.
 
 So now, we can simplify our slotted e-graph:
 
@@ -109,6 +109,5 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 
 [^bij]: Technically, it would be "equal up to a bijective(!) renaming". As x-y and x-x should not be considered "equal up to renaming".
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
-[^shape]: We call this a "shape" in the paper.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
 [^subst]: The syntax `[x := y]` is inspired from substitutions. However it's important to note that both `x` and `y` are forced to be a variable (= Slot), so you can't substitute using arbitrary terms or e-classes with this. (However, extending that would get us into Knuth-bendix territory, which is what we are looking at a bit.)

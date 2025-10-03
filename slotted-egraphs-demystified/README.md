@@ -75,6 +75,8 @@ c3(x, y) := - c2(x, y) | c0(y) - c0(x)
 c1(x) := c0(x)
 ```
 
+We remember how we eliminated `c1` using this final equation `c1(x) := c0(x)`. We will clarify this more in the "Unionfind" subsection.
+
 ### Non-trivial equations
 
 This simplification enables another one:
@@ -93,7 +95,7 @@ c1(x) := c0(x)
 c3(x, y) := c2(y, x)
 ```
 
-### The Unionfind
+### Unionfind
 
 Whenever you merge two classes, one will be the "canonical e-class" (in this case `c2`), and the other e-class (`c3`) will just point to that canonical e-class.
 This "pointer" `c3(x, y) := c2(y, x)` will be stored in a unionfind datastructure, it maps `c3` to the pair `(c2, [x := y, y := x])`;

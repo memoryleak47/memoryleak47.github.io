@@ -35,6 +35,7 @@ We could for example re-define `c2` equivalently as:
 ```
 c2(z) := c0 * c1(z) | c1(z) + c1(z)
 ```
+This is one crucial property of variables: The names you choose never matter!
 
 ## Deduplication via Hashcons
 

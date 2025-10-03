@@ -17,7 +17,7 @@ c3 := - c2 | c1 - c0
 ```
 
 Every `c0, ..., c4` corresponds to an "e-class", whereas the terms on the right (eg. `c0 - c1`) correspond to "e-nodes". [^grammar]
-In a slotted e-graph however, every e-class is parameterized by some variables (aka slots).
+In a slotted e-graph however, an e-class is parameterized by their variables (aka slots):
 
 ```
 c0(x) := x

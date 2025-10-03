@@ -44,17 +44,17 @@ This is one crucial property of variables: The names you choose do not matter!
 ### Deduplication via Hashcons and Shapes
 
 In general, E-graphs want to prevent storing the same e-node in multiple e-classes.
-In order to achieve this, there is the "hashcons": the global registry mapping each e-node to the e-class that contains it.
+In order to achieve this, there is the "hashcons": the registry mapping each e-node to the e-class that contains it.
 This way we guarantee that any e-node is contained in at most one e-class.
 
 In Slotted E-Graphs we want an even stronger notion of deduplication:
-If two terms are equal up to renaming[^bij] of variables, they should be represented by the same e-class.
+If two e-nodes (or terms) are equal up to renaming[^bij] of variables, they should be represented by the same parameterized e-class.
 
 The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x+y") != hash("a+b")`,
 so we require a "name-independent representation" of e-nodes (called *shape*) that we can use in the hashcons.
 
 To compute the shape of an e-node (or term), we rename all variables to "numeric variables" (`0`, `1`, ...) based on the order of their first occurrence.
-So for example both `x+y` and `a+b` have the shape `0+1`, and `x+(y+x)` would have the shape `0+(1+0)`.
+For example `x+(y+x)` would have the shape `0+(1+0)`.
 In other words, the shape of an e-node is the lexicographically smallest e-node that is equal up to renaming to it. (Assuming the lexicographical ordering `0 < 1 < 2 < ...`)
 
 ### Continuing the example

@@ -51,10 +51,9 @@ If we now populate our hashcons using these shapes, we will notice that both `x`
 To explain the reasoning why this works, we rewrite both `c1` and `c3` to the common shape `$0`.
 We know that `c1(x) = x, c3(y) = y` and thus `c1($0) = $0 = c3($0)`.
 
-It's worth pointing out that this gives us a mapping that relates the variables from `c1` to the variables of `c2`.
-This is important in general, as both `c1` and `c3` could have many variables; it's important to know which one corresponds to which.
+Note: If the e-classes `c1` and `c3` would have had more variables, the resulting equation (eg. `c7($0, $1, $2) = c9($2, $0, $1)`) would have informed us, which variables from `c1` correspond to which variables from `c3`.
 
-So now, we can simplify our slotted e-graph, by replacing all occurrences of `c3(x)` with `c1(x)`:
+So now, we can simplify our slotted e-graph, by replacing all occurrences of `c3(z)` with `c1(z)` (for all z):
 
 ```
 c0 := 2

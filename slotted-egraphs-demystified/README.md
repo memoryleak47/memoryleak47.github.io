@@ -97,7 +97,7 @@ c3(x, y) := c2(y, x)
 
 Whenever you merge two classes, one will be the "canonical e-class" (in this case `c2`), and the other e-class (`c3`) will just point to that canonical e-class.
 This "pointer" `c3(x, y) := c2(y, x)` will be stored in a unionfind datastructure, it maps `c3` to the pair `(c2, [x := y, y := x])`;
-the latter of which expresses how you have to rename the slots in order to convert from `c3` to `c2`.
+the latter of which expresses which variables from `c3` correspond to which variables from `c2`.
 
 # Chapter II - Redundancies (and incidentally also binders)
 So, we now have a rough understand how the slotted e-graphs functions.

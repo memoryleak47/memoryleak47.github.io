@@ -1,8 +1,8 @@
 Slotted E-Graphs demystified
 ============================
 
-In this blog post I attempt to give the simplest explanation of slotted e-graphs that I can come up with.
-For that we'll start in Chapter I with a simplified version, and generalize it to general slotted e-graphs in Chapters II and III.
+In this blog post I attempt to give the a more concise and simple explanation of slotted e-graphs, than the one from our paper.
+For that we'll start in Chapter I with a simplified version of slotted e-graphs, and generalize it to general slotted e-graphs in Chapters II and III.
 
 # Chapter I - From E-Graph to Slotted E-Graph
 First, what is an e-graph?

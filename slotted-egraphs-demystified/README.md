@@ -4,21 +4,25 @@ Slotted E-Graphs demystified
 In this blog post I attempt (!) to give the simplest explanation of slotted e-graphs that I can come up with.
 For that we'll start in Chapter I with some simplifying assumptions, and generalize the system to general slotted e-graphs in Chapters II and III.
 
+Contrary to how it is described in the PLDI paper, we will use natural numbers `0, 1, 2, 3, ...` to express variables (aka slots).
+This can make stuff a bit easier, but might be unintuitive at first.[TODO: clarify why]
+
 # Chapter 1 - From E-Graph to Slotted E-Graph
 First, what is an e-graph?
 An e-graph stores a bunch of terms and equations among them, by grouping equivalent terms into equivalence classes ("e-classes").
-For example, we might represent the equation `-(x-y) = y-x` like this:
+For example, we might represent the equation `-(0-1) = 1-0` like this (again, `0` and `1` are variables here):
 
 ```
-a := x
-b := y
+a := 0
+b := 1
 c := a - b
 d := - c = b - a
 ```
 
-Every `a`, ..., `e` corresponds to an "e-class", whereas the terms on the right (eg. `a - b`) correspond to "e-nodes".[^grammar]
+Every `a, ..., d` corresponds to an "e-class", whereas the terms on the right (eg. `a - b`) correspond to "e-nodes".[^grammar]
+
+If we want to convert this e-graph to a slotted e-graph,
 In a slotted e-graph however, every e-class is parameterized by some variables (aka slots).
-In this document, we use "numeric variables" 0, 1, 2, ...
 So the previous e-graph becomes this slotted e-graph:
 
 ```
@@ -46,7 +50,7 @@ d(0, 1) := - c(0, 1) = a(1) - a(0)
 b(0) := a(0)
 ```
 
-Note that this already guarantees that we have exactly one "variable e-class", as all e-classes are "equal to up to renaming".
+Note that this already guarantees that we have exactly one "variable e-class", as all variables are generally "equal to up to renaming".
 We keep the rule `b(0) := a(0)` that we just applied, at the bottom of our list of equations.
 This corresponds to a "unionfind" entry, that normalizes `b(0)` to `a(0)`. But more on that later.
 

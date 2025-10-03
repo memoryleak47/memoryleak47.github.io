@@ -81,9 +81,9 @@ This simplification enables another one:
 The e-classes `c2` and `c3` now each contain an e-node with shape `c0(0) - c0(1)`, that we will detect when populating the hashcons.
 From these e-nodes we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.[^shape-compute]
 This equation is a bit more interesting than the one we had before. We have equated the e-classes `c2` and `c3`, but there's a *literal* twist:
-The variable `x` in `c2`, corresponds to the variable `y` in `c3` and vice versa.
+The variable `x` in `c2`, corresponds to the variable `y` in `c3` and vice versa. Hence we cannot "generally" equate `c2=c3`, but we have to be careful to respect this renaming.
 
-We then choose to replace `c3(1,0)` with `c2(0,1)` in the slotted e-graph, where again `0, 1` can match against any variables:
+Using this new equation, We can now replace `c3(1,0)` with `c2(0,1)`, where again `0, 1` can match against any variables:
 
 ```
 c0(x) := x

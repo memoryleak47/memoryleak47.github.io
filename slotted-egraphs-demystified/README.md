@@ -44,8 +44,15 @@ In order to solve this issue, we are required to normalize our names in a sense 
 For this, we rename all slots to numbers: we identify `0` with the left-most-occurring variable, then `1` for the next variable, etc.
 In this sense, both `x+y` and `a+b` would get the output `0+1`.[^shape]
 
-If we now populate our hashcons, we will notice that both `x` and `y` will result in the shape `0`.[^one-var-eclass]
-And thus we equate `c2 = c0`. [TODO]
+If we now populate our hashcons, we will notice that both `x` and `y` will result in the shape `0`, which means that we have to merge these classes.[^one-var-eclass]
+
+To explain the reasoning why this works, we know that `c0(x) = x`, and further we can decompose `x = 0 [0 := x]`, where `[0 := x]` is a substitution replacing `0` with `x`. This looks stupid, but will be helpful ^^
+Simlarly, we know `c2(y) = y = 0 [0 := y]`. And from `c0(x) = 0 [0 := x]` we can infer `c0(x) [x := 0] = 0` as our renamings are bijections.
+Similarly we get `c2(y) [y := 0] = 0` and thus `c0(x) [x := 0] = c2(y) [y := 0]`. Again by bijection, we obtain
+`c0(x) = c2(y) [y := 0] [0 := x] = c2(y) [y := x]`.
+So in short, after equating `c0(x)` and `c2(y)` using the "common node" 0, we obtain the equation `c0(x) = c2(y) [y := x]`.
+
+So now, we can simplify our slotted e-graph:
 
 ```
 c0(x) := x
@@ -54,7 +61,7 @@ c3(y) := 2*c0(y) | c0(y) + c0(y)
 c4(x, y) := c1(x) + c3(y)
 ```
 
-And then by again using the hashcons, `2*c0(x)` and `2*c0(y)` collide at the shape `2*c0(0)`.
+And then by again using the hashcons, `2*c0(x)` and `2*c0(y)` collide at the shape `2*c0(0)`. And we similar (same reasoning as before).
 TODO: `2` looks like a normalized slot.
 
 ```

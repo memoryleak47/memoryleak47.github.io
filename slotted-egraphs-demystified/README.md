@@ -34,9 +34,9 @@ c5 := c2[x := x] + c4[y := y]
 
 Note that as our slotted e-graph "came" from a conventional e-graph, we only use identity renamings `[x := x]` and `[y := y]` for now. But that will change soon enough.
 
-Now, e-graphs do not want to store the same term in different classes.
-In order to achieve this, there is the "hashcons", the global registry expressing where a "node" is contained.
-This way we guarantee that any node is just contained in at most one class.
+In general, E-graphs do not want to store the same term in different classes.
+In order to achieve this, there is the "hashcons", the global registry expressing in which e-class an e-node is contained.
+This way we guarantee that any e-node is just contained in at most one e-class.
 
 In Slotted E-Graphs we want an even stronger notion of deduplication:
 If two terms are equal up to renaming[^bij] of variables, they should be represented by the same e-class.
@@ -49,13 +49,12 @@ In this sense, both `x+y` and `a+b` would get the output `$0 + $1`.[^shape]
 
 If we now populate our hashcons, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge these classes.[^one-var-eclass]
 
-To explain the reasoning why this works, we know that `c0 = x`, and further we can decompose `x = $0 [$0 := x]`.
-Simlarly, we know `c2 = y = $0 [$0 := y]`. And from `c0 = $0 [$0 := x]` we can infer `c0 [x := $0] = $0` as our renamings are bijections.
-Similarly we get `c2 [y := $0] = $0` and thus `c0 [x := $0] = c2 [y := $0]`. Again by bijection, we obtain
-`c0 = c2 [y := $0] [$0 := x] = c2 [y := x]`.
-So in short, after equating `c0` and `c2` using the "common node" 0, we obtain the equation `c0 = c2 [y := x]`.
+To explain the reasoning why this works, we rewrite both `c1` and `c3` to the common node `$0`:
+We know that `c1 = x = $0 [$0 := x]`, and `c3 = y = $0 [$0 := y]`. The decomposition `x = $0 [$0 := x]` comes from computing the shape of x.
+As our renamings are bijections, we can infer `c1 [x := $0] = $0` and `c3 [y := $0] = $0` and thus,`c1 [x := $0] = c3 [y := $0]`,
+which we can simplify to `c3 = c1 [x := $0] [$0 := y] = c1 [x := y]`.
 
-It's worth pointing out that we get an extra renaming `[y := x]` out of this process.
+It's worth pointing out that we get an extra renaming `[x := y]` out of this process.
 This is important in general, as there could be many slots on the left, and many on the right. It's important to know which one corresponds to which.
 
 So now, we can simplify our slotted e-graph:

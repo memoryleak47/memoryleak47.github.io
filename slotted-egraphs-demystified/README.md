@@ -37,7 +37,7 @@ This is one crucial property of variables: The names you choose do not matter!
 
 Further, it's worth noting that each id `c0` spans infinitely many different e-classes `c0(x)`, `c0(y)`, ...,
 that all represent disjoint sets of terms.
-[TODO: clarify e-class vs. applied e-class? What do I call "e-class"?]
+[TODO: clarify e-class vs. applied e-class? What do I call "e-class"? I think an Applied Id should be an actual e-class. c0 itself does not only represent equivalent things.]
 
 ### Deduplication via Hashcons and Shapes
 

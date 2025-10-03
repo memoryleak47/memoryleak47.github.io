@@ -8,7 +8,7 @@ This blog post will focus more on conveying the idea, than about being precise i
 # Chapter 1 - From E-Graph to Slotted E-Graph
 First, what is an e-graph?
 An e-graph stores a bunch of terms and equations among them, by grouping equivalent terms into equivalence classes ("e-classes").
-For example, if we know that `2*x = x+x` and `2*y = y+y` and we want to represent the term `2*x + 2*y` it will result in the following e-graph:
+For example, we might represent the term `2*x + 2*y` (plus some equations about it) like this:
 
 ```
 c0 := 2

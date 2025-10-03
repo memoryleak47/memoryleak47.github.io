@@ -27,9 +27,16 @@ c2(x, y) := c0(x) - c1(y)
 c3(x, y) := - c2(x, y) | c1(y) - c0(x)
 ```
 
-It's worth pointing out that variable names chosen in every e-class have no particular meaning, and can be renamed at any point.
+One can visualize a slotted e-class (eg. `c3`) as a function, that takes in some names (`x, y`) and yields a set of terms `- c2(x, y)` unioned with `c1(y) - c0(x)`.
+These e-class functions recursively call each other to build up all the terms represented by an e-class.
+
+As slotted e-classes can be seen as functions, the variable names (i.e. function parameters) chosen in every e-class have no particular meaning, and can be renamed at any point.
 We could for example re-define `c2` equivalently as `c2(f, d) := c0(f) - c1(d)` if we wanted to.
 This is one crucial property of variables: The names you choose do not matter!
+
+Further, it's worth noting that each id `c0` spans infinitely many different e-classes `c0(x)`, `c0(y)`, ...,
+that all represent disjoint sets of terms.
+[TODO: clarify e-class vs. applied e-class? What do I call "e-class"?]
 
 ### Deduplication via Hashcons and Shapes
 

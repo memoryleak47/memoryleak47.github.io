@@ -20,17 +20,6 @@ c4 := c1 + c3
 
 Every `c0`, ..., `c4` corresponds to an "e-class", whereas the partial terms on the right `x`, `2*c0`, ... correspond to e-nodes. [^grammar]
 
-In a slotted e-graph, this remains the same -- however classes get parameterized by their variables (slots):
-So the same e-graph would now be:
-
-```
-c0(x) := x
-c1(x) := 2*c0(x) | c0(x) + c0(x)
-c2(y) := y
-c3(y) := 2*c2(y) | c2(y) + c2(y)
-c4(x, y) := c1(x) + c3(y)
-```
-
 Now, e-graphs do not want to store the same term in different classes.
 In order to achieve this, there is the "hashcons", the global registry expressing where a "node" is contained.
 This way we guarantee that any node is just contained in at most one class.
@@ -46,38 +35,36 @@ In this sense, both `x+y` and `a+b` would get the output `0+1`.[^shape]
 
 If we now populate our hashcons, we will notice that both `x` and `y` will result in the shape `0`, which means that we have to merge these classes.[^one-var-eclass]
 
-To explain the reasoning why this works, we know that `c0(x) = x`, and further we can decompose `x = 0 [0 := x]`, where `[0 := x]` is a substitution replacing `0` with `x`. This looks stupid, but will be helpful ^^
-Simlarly, we know `c2(y) = y = 0 [0 := y]`. And from `c0(x) = 0 [0 := x]` we can infer `c0(x) [x := 0] = 0` as our renamings are bijections.
-Similarly we get `c2(y) [y := 0] = 0` and thus `c0(x) [x := 0] = c2(y) [y := 0]`. Again by bijection, we obtain
-`c0(x) = c2(y) [y := 0] [0 := x] = c2(y) [y := x]`.
-So in short, after equating `c0(x)` and `c2(y)` using the "common node" 0, we obtain the equation `c0(x) = c2(y) [y := x]`.
+To explain the reasoning why this works, we know that `c0 = x`, and further we can decompose `x = 0 [0 := x]`, where `[0 := x]` is a substitution replacing `0` with `x`. This looks stupid, but will be helpful ^^
+Simlarly, we know `c2 = y = 0 [0 := y]`. And from `c0 = 0 [0 := x]` we can infer `c0 [x := 0] = 0` as our renamings are bijections.
+Similarly we get `c2 [y := 0] = 0` and thus `c0 [x := 0] = c2 [y := 0]`. Again by bijection, we obtain
+`c0 = c2 [y := 0] [0 := x] = c2 [y := x]`.
+So in short, after equating `c0` and `c2` using the "common node" 0, we obtain the equation `c0 = c2 [y := x]`.
 
-It's worth pointing out that we get an extra renaming "[y := x]" out of this process.
+It's worth pointing out that we get an extra renaming `[y := x]` out of this process.
 This is important in general, as there could be many slots on the left, and many on the right. It's important to know which one corresponds to which.
 
 So now, we can simplify our slotted e-graph:
 
-TODO: I don't like that I'm writing `c0(x)` when I should just be writing `c0`. Can I all of this stuff, without writing the "\_(x, y)" part?
-
 ```
-c0(x) := x
-c1(x) := 2*c0(x) | c0(x) + c0(x)
-c3(y) := 2*c0(y) | c0(y) + c0(y)
-c4(x, y) := c1(x) + c3(y)
+c0 := x
+c1 := 2*c0 | c0 + c0
+c3 := 2*c0[x := y] | c0[x := y] + c0[x := y]
+c4 := c1 + c3
 
-c2(y) := c0(x) [x := y]
+c2 := c0[x := y]
 ```
 
-And then by again using the hashcons, `2*c0(x)` and `2*c0(y)` collide at the shape `2*c0(0)`. And we similar (same reasoning as before).
-TODO: `2` looks like a normalized slot.
+And then by again using the hashcons, `2*c0` and `2*c0[x := y]` collide at the shape `2*c0[x := 0]`. And we similarly merge them.
+TODO: `2` looks like a normalized slot. Also: I did forget to hashcons it.
 
 ```
-c0(x) := x
-c1(x) := 2*c0(x) | c0(x) + c0(x)
-c4(x, y) := c1(x) + c1(y)
+c0 := x
+c1 := 2*c0 | c0 + c0
+c4 := c1 + c1[x := y]
 
-c2(y) := c0(x) [x := y]
-c3(y) := c2(x) [x := y]
+c2 := c0[x := y]
+c3 := c2[x := y]
 ```
 
 We have now separated out, the bottom equations. They correspond to the "unionfind" in an e-graph.
@@ -97,8 +84,8 @@ This is weird, as both sides of the equation are equal up to renaming.
 We might try to to "just store them as normal nodes":
 
 ```
-c0(x) := x
-c1(x, y) := x+y | y+x
+c0 := x
+c1 := c0+c0[x := y] | c0[x := y]
 ```
 
 But this is not enough.

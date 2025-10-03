@@ -43,18 +43,17 @@ This is one crucial property of variables: The names you choose do not matter!
 
 ### Deduplication via Hashcons and Shapes
 
-In general, E-graphs want to prevent storing the same e-node in multiple e-classes.
-In order to achieve this, there is the "hashcons": the registry mapping each e-node to the e-class that contains it.
-This way we guarantee that any e-node is contained in at most one e-class.
+As each term should be represented only in a single e-class, e-graphs must detect when different e-classes share a common e-node.
+In order to achieve this they use the "hashcons", which is supposed to map each e-node to the unique e-class that contains it.
 
-In Slotted E-Graphs we want an even stronger notion of deduplication:
+In Slotted E-Graphs we want a stronger notion of deduplication:
 If two e-nodes (or terms) are equal up to renaming[^bij] of variables, they should be represented by the same parameterized e-class.
 
-The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x+y") != hash("a+b")`,
-so we require a "name-independent representation" of e-nodes (called *shape*) that we can use in the hashcons.
+The problem is that two e-nodes that are equal up to renaming can definitely still hash to different values. Think `hash("c7(x, y)") != hash("c7(a, b)")`,
+so we require a "name-independent representation" of e-nodes (called its *shape*) that we can use for the hashcons.
 
-To compute the shape of an e-node (or term), we rename all variables to "numeric variables" (`0`, `1`, ...) based on the order of their first occurrence.
-For example `x+(y+x)` would have the shape `0+(1+0)`.
+To compute the shape of an e-node, we rename all variables to "numeric variables" (`0`, `1`, ...) based on the order of their first occurrence.
+For example the e-node `c3(x, y, z) + c4(w, x)` would have the shape `c3(0, 1, 2) + c4(3, 0)`.
 In other words, the shape of an e-node is the lexicographically smallest e-node that is equal up to renaming to it. (Assuming the lexicographical ordering `0 < 1 < 2 < ...`)
 
 ### Continuing the example

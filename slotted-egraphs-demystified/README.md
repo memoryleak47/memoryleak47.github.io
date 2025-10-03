@@ -51,7 +51,7 @@ so we have to "get rid of the names" before putting our e-nodes into the hashcon
 
 To compute the shape of an e-node (or term), we rename all variables to "numeric variables" (`0`, `1`, ...), so for example both `x+y` and `a+b` have the shape `0+1`.[^notation]
 In general, we can compute the shape by iterating through the e-node from left to right, and each new variable we encounter will be renamed to `0`, the next one `1`, etc.
-(To be clear, if a variable occurs multiple times, all occurrences will be renamed to the same number.)
+(To be clear, if a variable occurs multiple times, all occurrences will be renamed to the same numeric variable.)
 
 If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `0`, which means that we have to merge their e-classes, `c1` and `c3`.[^one-var-eclass]
 Or formally: We know that both `c1` and `c3` are able to represent `0`, i.e. using `c1(0) = 0` and `c3(0) = 0`,

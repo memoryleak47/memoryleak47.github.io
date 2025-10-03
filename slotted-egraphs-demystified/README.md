@@ -43,7 +43,7 @@ If two terms are equal up to renaming[^bij] of variables, they should be represe
 The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x+y") != hash("a+b")`,
 so we have to "get rid of the names" before putting our e-nodes into the hashcons. We call this "naming independent representation" a "shape".
 
-To compute the shape of an e-node (or term), we rename all variables to "numeric variables" (`0`, `1`, ...), so for example both `x+y` and `a+b` have the shape `0+1`.[^notation]
+To compute the shape of an e-node (or term), we rename all variables to "numeric variables" (`0`, `1`, ...), so for example both `x+y` and `a+b` have the shape `0+1`.
 In general, we can compute the shape by iterating through the e-node from left to right, and each new variable we encounter will be renamed to `0`, the next one `1`, etc.
 (To be clear, if a variable occurs multiple times, all occurrences will be renamed to the same numeric variable.)
 
@@ -108,4 +108,3 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^bij]: Technically, it would be "equal up to a bijective(!) renaming". As x-y and x-x should not be considered "equal up to renaming".
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context-free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
-[^notation]: Just to be clear, the `2` from `2*x + 2*y` is a *number constant*. And the `0`, `1` from the shape `0+1` are *numeric variables*. They are not the same thing. Sorry for the abuse of notation.

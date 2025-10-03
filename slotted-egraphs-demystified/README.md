@@ -31,7 +31,7 @@ c3(x, y) := - c2(x, y) | c1(y) - c0(x)
 One can visualize a parameterized e-class (eg. `c3`) as a function, that takes in some inputs (`x, y`) and yields a set of terms `- c2(x, y)` unioned with `c1(y) - c0(x)`.
 These parameterized e-class functions recursively call each other to build up all the terms they represent.
 
-It's worth pointing out that a parameterized e-class (`c0`) spans infinitely many disjoint equivalence classes (e-class): `c0(a)`, `c0(b)`, ...; one e-class per "application" of the parameterized e-class.[^groups]
+It's worth pointing out that a parameterized e-class (`c0`) spans infinitely many disjoint equivalence classes: `c0(a)`, `c0(b)`, ...; one e-class per "application" of the parameterized e-class.[^groups]
 Thus importantly, `c0` itself can represent all variables `a, b, c, ...`; and thus does not qualify as an e-class (because `a` might not be equal to `b`).
 Only an "application" of a parameterized e-class `c0(a)` actually yields an "equivalence-class" in the usual sense.
 

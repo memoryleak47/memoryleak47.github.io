@@ -48,7 +48,7 @@ If two terms are equal up to renaming[^bij] of variables, they should be represe
 The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x+y") != hash("a+b")`,
 so we have to "get rid of the names" before putting our e-nodes into the hashcons. We call this "naming independent representation" a "shape".
 
-To compute the shape of an e-node (or term), we rename all variables to numbers (`$0`, `$1`, ...), so for example both `x+y` and `a+b` have the shape `$0+$1`.
+To compute the shape of an e-node (or term), we rename all variables to numbers (`$0`, `$1`, ...), so for example both `x + y` and `a + b` have the shape `$0 + $1`.
 In general, we can compute the shape by iterating through the e-node from left to right, and each new variable we encounter will be renamed to `$0`, the next one `$1`, etc.
 (To be clear, if a variable occurs multiple times, all occurrences will be renamed to the same number.)
 

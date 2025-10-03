@@ -51,11 +51,11 @@ In Slotted E-Graphs we want an even stronger notion of deduplication:
 If two terms are equal up to renaming[^bij] of variables, they should be represented by the same e-class.
 
 The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x+y") != hash("a+b")`,
-so we have to "get rid of the names" before putting our e-nodes into the hashcons. We call this "naming independent representation" a "shape".
+so we require a "name-independent representation" of e-nodes (called *shape*) that we can use in the hashcons.
 
-To compute the shape of an e-node (or term), we rename all variables to "numeric variables" (`0`, `1`, ...), so for example both `x+y` and `a+b` have the shape `0+1`.
-In general, we can compute the shape by iterating through the e-node from left to right, and each new variable we encounter will be renamed to `0`, the next one `1`, etc.
-(To be clear, if a variable occurs multiple times, all occurrences will be renamed to the same numeric variable.)
+To compute the shape of an e-node (or term), we rename all variables to "numeric variables" (`0`, `1`, ...) based on the order of their first occurrence.
+So for example both `x+y` and `a+b` have the shape `0+1`, and `x+(y+x)` would have the shape `0+(1+0)`.
+In other words, the shape of an e-node is the lexicographically smallest e-node that is equal up to renaming to it. (Assuming the lexicographical ordering `0 < 1 < 2 < ...`)
 
 ### Continuing the example
 
@@ -76,12 +76,13 @@ c3(x, y) := - c2(x, y) | c0(y) - c0(x)
 c1(x) := c0(x)
 ```
 
-### "Re-ordering" equations
+### Non-trivial equations
 
 This simplification enables another one:
 The e-classes `c2` and `c3` now each contain an e-node with shape `c0(0) - c0(1)`, that we will detect when populating the hashcons.
 From these e-nodes we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.[^shape-compute]
-One important thing about this equation is that it "flips" the variables!
+This equation is a bit more interesting than the one we had before. We have equated the e-classes `c2` and `c3`, but there's a *literal* twist:
+The variable `x` in `c2`, corresponds to the variable `y` in `c3` and vice versa.
 
 We then choose to replace `c3(1,0)` with `c2(0,1)` in the slotted e-graph, where again `0, 1` can match against any variables:
 
@@ -96,7 +97,8 @@ c3(x, y) := c2(y, x)
 ### The Unionfind
 
 Whenever you merge two classes, one will be the "canonical e-class" (in this case `c2`), and the other e-class (`c3`) will just point to that canonical e-class.
-This "pointer" `c3(x, y) := c2(y, x)` will be stored in a unionfind datastructure, it maps `c3` to `c2` plus some information on how to re-order the slots.
+This "pointer" `c3(x, y) := c2(y, x)` will be stored in a unionfind datastructure, it maps `c3` to the pair `(c2, [x := y, y := x])`;
+the latter of which expresses how you have to rename the slots in order to convert from `c3` to `c2`.
 
 # Chapter II - Redundancies (and incidentally also binders)
 So, we now have a rough understand how the slotted e-graphs functions.

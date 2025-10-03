@@ -17,7 +17,8 @@ c3 := - c2 | c1 - c0
 ```
 
 Every `c0, ..., c4` corresponds to an "e-class", whereas the terms on the right (eg. `c0 - c1`) correspond to "e-nodes". [^grammar]
-In a slotted e-graph however, an e-class is parameterized by their variables (aka slots):
+
+If we convert this conventional e-graph to a slotted e-graph, every e-class will be parameterized by the variables (aka slots) that are used in this e-class:
 
 ```
 c0(x) := x
@@ -29,11 +30,11 @@ c3(x, y) := - c2(x, y) | c1(y) - c0(x)
 It's worth pointing out that variable names chosen in every e-class have no particular meaning, and can be renamed at any point.
 We could for example re-define `c2` equivalently as `c2(f, d) := c0(f) - c1(d)` if we wanted to.
 
-This is one crucial property of variables: The names you choose never matter!
+This is one crucial property of variables: The names you choose do not matter!
 
 ## Deduplication via Hashcons
 
-In general, E-graphs do not want to store the same term in different classes.
+In general, E-graphs want to prevent storing the same e-node in multiple e-classes.
 In order to achieve this, there is the "hashcons": the global registry mapping each e-node to the e-class that contains it.
 This way we guarantee that any e-node is just contained in at most one e-class.
 
@@ -61,10 +62,9 @@ c3(x, y) := - c2(x, y) | c0(y) - c0(x)
 c1(x) := c0(x)
 ```
 
-## Cross-merges
-
-And then by again using the hashcons, `c0(x) - c0(y)` and `c0(y) - c0(x)` collide at the shape `c0(0) - c0(1)`.
-From that we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.
+This simplification enables another one:
+The e-classes `c2` and `c3` now each contain an e-node with shape `c0(0) - c0(1)`, that we will find when populating the hashcons.
+From that we infer the equation `c2(0,1) = c0(0) - c0(1) = c3(1,0)`.[^shape-compute]
 Note that this equation `c2(0,1) = c3(1,0)` is a very different equation than `c2(0,1) = c3(0,1)`; as we have to flip the variables!
 
 When now replacing, we end up with the following resulting slotted e-graph:
@@ -108,3 +108,4 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^bij]: Technically, it would be "equal up to a bijective(!) renaming". As x-y and x-x should not be considered "equal up to renaming".
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context-free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
+[^shape-compute]: We obtain eg. `c2(0,1)`, as `c2(x, y)` contains the e-node `c0(x) - c1(y)`. During shape computation we remember the renaming that we compute. In this case `[x := 0, y := 1]`. Applying this renaming on `c2(x,y)` yields the final `c2(0,1)`.

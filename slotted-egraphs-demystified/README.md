@@ -72,10 +72,10 @@ c0(x) := x
 c2(x, y) := c0(x) - c0(y)
 c3(x, y) := - c2(x, y) | c0(y) - c0(x)
 
-c1(x) := c0(x)
+c1(0) := c0(0)
 ```
 
-We remember how we eliminated `c1` using this final equation `c1(x) := c0(x)`. We will clarify this more in the "Unionfind" subsection.
+We remember how we eliminated `c1` using this final equation `c1(0) := c0(0)`. We will clarify this more in the "Unionfind" subsection.
 
 ### Non-trivial equations
 
@@ -91,16 +91,15 @@ Using this new equation, We can now replace `c3(1,0)` with `c2(0,1)`, where agai
 c0(x) := x
 c2(x, y) := - c2(y, x) | c0(x) - c0(y)
 
-c1(x) := c0(x)
-c3(x, y) := c2(y, x)
+c1(0) := c0(0)
+c3(0, 1) := c2(1, 0)
 ```
 
 ### Unionfind
 
 Whenever you merge two classes, one will be the "canonical e-class" (in this case `c2`), and the other e-class (`c3`) will just point to that canonical e-class.
-This "pointer" `c3(x, y) := c2(y, x)` will be stored in a unionfind datastructure, it maps `c3` to the pair `(c2, [x := y, y := x])`;
-the latter of which expresses which variables from `c3` correspond to which variables from `c2`.
-When applying path compression to the unionfind, one has rememeber to compose these renaming annotations;
+This "pointer" `c3(0, 1) := c2(1, 0)` will be stored in a unionfind datastructure, it maps `c3` to `c2(1, 0)`.
+When applying path compression to the unionfind, one has remember to compose these re-orderings;
 just like `c0(x, y) := c1(y, x)` and `c1(a, b) := c2(b, a)` imply `c0(x, y) := c2(x, y)`.
 
 # Chapter II - Redundancies (and incidentally also binders)

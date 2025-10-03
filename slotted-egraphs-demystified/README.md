@@ -21,18 +21,15 @@ c5 := c2 + c4
 
 Every `c0`, ..., `c5` corresponds to an "e-class", whereas the partial terms on the right (eg. `c0 * c1`) correspond to "e-nodes". [^grammar]
 In a slotted e-graph however, every e-class is parameterized by some variables (aka slots).
-For an e-class `c0` that contains a variable `x`, We write `c0[x := y]` to express the class `c0` in which we rename `x` to `y`.[^subst]
 
 ```
 c0 := 2
-c1 := x
-c2 := c0 * c1[x := x] | c1[x := x] + c1[x := x]
-c3 := y
-c4 := c0 * c3[y := y] | c3[y := y] + c3[y := y]
-c5 := c2[x := x] + c4[y := y]
+c1(x) := x
+c2(x) := c0 * c1(x) | c1(x) + c1(x)
+c3(y) := y
+c4(y) := c0 * c3(y) | c3(y) + c3(y)
+c5(x, y) := c2(x) + c4(y)
 ```
-
-Note that as our slotted e-graph "came" from a conventional e-graph, we only use identity renamings `[x := x]` and `[y := y]` for now. But that will change soon enough.
 
 ## Deduplication via Hashcons
 
@@ -51,36 +48,34 @@ In this sense, both `x+y` and `a+b` would get the output `$0+$1`. We call this "
 
 If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge their e-classes, `c1` and `c3`.[^one-var-eclass]
 
-To explain the reasoning why this works, we rewrite both `c1` and `c3` to the common node `$0`:
-We know that `c1 = x = $0 [$0 := x]`, and `c3 = y = $0 [$0 := y]`. The decomposition `x = $0 [$0 := x]` comes from computing the shape of the e-node `x`.
-As our renamings are bijections, we can infer `c1 [x := $0] = $0` and `c3 [y := $0] = $0` and thus,`c1 [x := $0] = c3 [y := $0]`,
-which we can simplify to `c3 = c1 [x := y]`.
+To explain the reasoning why this works, we rewrite both `c1` and `c3` to the common shape `$0`.
+We know that `c1(x) = x, c3(y) = y` and thus `c1($0) = $0 = c3($0)`.
 
-It's worth pointing out that we get an extra renaming `[x := y]` out of this process.
+It's worth pointing out that this gives us a mapping that relates the variables from `c1` to the variables of `c2`.
 This is important in general, as both `c1` and `c3` could have many variables; it's important to know which one corresponds to which.
 
-So now, we can simplify our slotted e-graph, by replacing all occurrences of `c3` with `c1 [x := y]`:
+So now, we can simplify our slotted e-graph, by replacing all occurrences of `c3(x)` with `c1(x)`:
 
 ```
 c0 := 2
-c1 := x
-c2 := c0 * c1[x := x] | c1[x := x] + c1[x := x]
-c4 := c0 * c1[x := y] | c1[x := y] + c1[x := y]
-c5 := c2[x := x] + c4[y := y]
+c1(x) := x
+c2 := c0 * c1(x) | c1(x) + c1(x)
+c4 := c0 * c1(y) | c1(y) + c1(y)
+c5 := c2[x := x] + c4(y)
 
-c3 := c1[x := y]
+c3(x) := c1(x)
 ```
 
-And then by again using the hashcons, `c0 * c1[x := x]` and `c0 * c1[x := y]` collide at the shape `c0 * c1[x := $0]`[^confusing]. And we similarly merge them.
+And then by again using the hashcons, `c0 * c1(x)` and `c0 * c1(y)` collide at the shape `c0 * c1($0)`. And we similarly merge them.
 
 ```
 c0 := 2
-c1 := x
-c2 := c0 * c1[x := x] | c1[x := x] + c1[x := x]
-c5 := c2[x := x] + c2[x := y]
+c1(x) := x
+c2(x) := c0 * c1(x) | c1(x) + c1(x)
+c5(x, y) := c2(x) + c2(y)
 
-c3 := c1[x := y]
-c4 := c3[x := y]
+c3(x) := c1(x)
+c4(x) := c3(x)
 ```
 
 ## The Unionfind
@@ -115,4 +110,3 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context-free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
 [^subst]: The syntax `[x := y]` is inspired from substitutions. However it's important to note that both `x` and `y` are forced to be a variable (= Slot), so you can't substitute using arbitrary terms or e-classes with this. (However, extending that would get us into Knuth-bendix territory, which is what we are looking at a bit.)
-[^confusing]: It might be confusing to declare the shape of `c0 * c1[x := x]` as `c0 * c1[x := $0]` as one might expect `c0 * c1[$0 := $0]`. But the "left" x and the "right" x, play a different role here. The "left" x is the variable that `c1` exposes, we can't rename that. `c1[$0 := $0]` makes no sense, as `c1` doesn't even contain `$0` so renaming it doesn't have any effect.

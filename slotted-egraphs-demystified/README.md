@@ -98,7 +98,7 @@ c3(0, 1) := c2(1, 0)
 ### Unionfind
 
 Whenever you merge two classes, one will be the "canonical e-class" (in this case `c2`), and the other e-class (`c3`) will just point to that canonical e-class.
-This "pointer" `c3(0, 1) := c2(1, 0)` will be stored in a unionfind datastructure, it maps `c3` to `c2(1, 0)`.
+This "pointer" `c3(0, 1) := c2(1, 0)` will be stored in a unionfind datastructure, it is expressed as `unionfind[c3] = c2(1, 0)`.[^impl]
 When applying path compression to the unionfind, one has remember to compose these re-orderings;
 just like `c0(x, y) := c1(y, x)` and `c1(a, b) := c2(b, a)` imply `c0(x, y) := c2(x, y)`.
 
@@ -128,3 +128,4 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
 [^shape-compute]: We obtain for example `c2(0,1)` as follows: `c2(x, y)` contains the e-node `c0(x) - c1(y)`, and during shape computation we remember the renaming that we need to apply to obtain the shape `c0(0) - c1(1)`. In this case `[x := 0, y := 1]` maps the e-node `c0(x) - c1(y)` to its shape `c0(0) - c1(1)`. Applying this renaming on `c2(x,y)` yields the final `c2(0,1)`.
 [^groups]: This is using simplified assumptions: In chapter III, we will see that different applications of a p-class will not always yield different e-classes.
+[^impl]: In the current implementation, we actually store `unionfind[c3] = (c2, [x := y, y := x])`, as it uses canonical names (`x, y`) instead of canonical positions (`0, 1`). But that's a matter of taste.

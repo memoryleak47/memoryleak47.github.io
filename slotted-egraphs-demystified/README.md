@@ -40,11 +40,11 @@ In Slotted E-Graphs we want an even stronger notion of deduplication:
 If two terms are equal up to renaming[^bij] of variables, they should be represented by the same e-class.
 
 The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x+y") != hash("a+b")`,
-so we have to "get rid of the names" before putting our e-nodes into the hashcons:
+so we have to "get rid of the names" before putting our e-nodes into the hashcons. We call this "naming independent representation" a "shape".
 
-For this, we rename all variables to numbers:
-For example both `x+y` and `a+b` would get the output `$0+$1`. We call this "nameless" representation the "shape" of an e-node (or term).
-In general, we can compute the shape by iterating through the e-node (or term) from left to right, and each new variable we encounter will be renamed to `$0`, the next one `$1`, etc.
+To compute the shape of an e-node (or term), we rename all variables to numbers (`$0`, `$1`, ...), so for example both `x+y` and `a+b` have the shape `$0+$1`.
+In general, we can compute the shape by iterating through the e-node from left to right, and each new variable we encounter will be renamed to `$0`, the next one `$1`, etc.
+(To be clear, if a variable occurs multiple times, all occurrences will be renamed to the same number.)
 
 If we now populate our hashcons using these shapes, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge their e-classes, `c1` and `c3`.[^one-var-eclass]
 

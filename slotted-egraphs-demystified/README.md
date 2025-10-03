@@ -90,13 +90,13 @@ Whenever you merge two classes, one will be the "canonical" one (eg. `c1`), and 
 It's worth noting that in a slotted e-graph, these unionfind-"pointers" are annotated with renamings.
 This has an interesting implication: If you apply path compression in a slotted unionfind, you have to compose the renamings.
 
-# Redundancies (and incidentally also binders)
+# Chapter II - Redundancies (and incidentally also binders)
 So, we now have a rough understand how the slotted e-graphs functions.
 
 However, there are a couple of cases that we simply ignored so far.
 Let's say we know that `x-x = 0`. This would require us to have an 
 
-# Symmetries
+# Chapter III - Symmetries
 The next (and last) annoying case is that we might learn that `x+y = y+x`.
 This is weird, as both sides of the equation are equal up to renaming.
 We might try to to "just store them as normal nodes":

@@ -59,9 +59,9 @@ So now, we can simplify our slotted e-graph, by replacing all occurrences of `c3
 ```
 c0 := 2
 c1(x) := x
-c2 := c0 * c1(x) | c1(x) + c1(x)
-c4 := c0 * c1(y) | c1(y) + c1(y)
-c5 := c2[x := x] + c4(y)
+c2(x) := c0 * c1(x) | c1(x) + c1(x)
+c4(y) := c0 * c1(y) | c1(y) + c1(y)
+c5(x, y) := c2[x := x] + c4(y)
 
 c3(x) := c1(x)
 ```
@@ -97,8 +97,8 @@ This is weird, as both sides of the equation are equal up to renaming.
 We might try to to "just store them as normal nodes":
 
 ```
-c0 := x
-c1 := c0[x := x] + c0[x := y] | c0[x := y]
+c0(x) := x
+c1(x, y) := c0(x) + c0(y) | c0(y) + c0(x)
 ```
 
 But this is not enough.

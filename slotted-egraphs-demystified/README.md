@@ -32,7 +32,7 @@ One can visualize a parameterized e-class (eg. `c3`) as a function, that takes i
 
 - `c3(x, y) = {-a | a ∈ c2(x, y) } ∪ { a - b | a ∈ c1(y), b ∈ c0(x)}`
 
-These parameterized e-class functions recursively call each other to build up all the terms they represent.
+These parameterized e-class functions recursively call each other to build up all the terms they represent.[^termination]
 
 <!-- It's worth pointing out that a parameterized e-class (`c0`) spans infinitely many disjoint equivalence classes: -->
 <!-- `c0(a)`, `c0(b)`, ...; one e-class per "application" of the parameterized e-class.[^groups] -->
@@ -128,3 +128,4 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
 [^groups]: This is using simplified assumptions: In chapter III, we will see that different applications of a p-class will not always yield different e-classes.
 [^impl]: In the current implementation, we actually store `unionfind[c3] = (c2, [x := y, y := x])`, as it uses canonical names (`x, y`) instead of canonical positions (`0, 1`). But that's a matter of taste.
+[^termination]: Technically, for recursive e-classes these functions would not terminate, but I hope it's clear what I mean. Think of these sets as the smallest fixed-points under these equations.

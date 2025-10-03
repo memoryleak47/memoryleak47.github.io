@@ -27,7 +27,7 @@ c3(x, y) := - c2(x, y) | c1(y) - c0(x)
 ```
 
 It's worth pointing out that variable names chosen in every e-class have no particular meaning, and can be renamed at any point.
-We could for example re-define `c2` equivalently as `c2(f, d) := c0(f) - c1(d)` if you feel like it.
+We could for example re-define `c2` equivalently as `c2(f, d) := c0(f) - c1(d)` if we wanted to.
 
 This is one crucial property of variables: The names you choose never matter!
 

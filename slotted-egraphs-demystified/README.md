@@ -30,7 +30,7 @@ c3(x, y) := - c2(x, y) | c1(y) - c0(x)
 
 One can visualize a parameterized e-class (eg. `c3`) as a function, that takes in variable names (`x, y`) and yields a set of terms:
 
-- `c3(x, y) := {-a | a ∈ c2(x, y) } ∪ { a - b | a ∈ c1(y), b ∈ c0(x)}`
+- `c3(x, y) = {-a | a ∈ c2(x, y) } ∪ { a - b | a ∈ c1(y), b ∈ c0(x)}`
 
 These parameterized e-class functions recursively call each other to build up all the terms they represent.
 

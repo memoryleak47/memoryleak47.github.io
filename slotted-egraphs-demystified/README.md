@@ -100,7 +100,7 @@ c3(0, 1) := c2(1, 0)
 Whenever you merge two classes, one will be the "canonical e-class" (in this case `c2`), and the other e-class (`c3`) will just point to that canonical e-class.
 This "pointer" `c3(0, 1) := c2(1, 0)` will be stored in a unionfind datastructure, it is expressed as `unionfind[c3] = c2(1, 0)`.[^impl]
 When applying path compression to the unionfind, one has remember to compose these re-orderings;
-just like `c0(x, y) := c1(y, x)` and `c1(a, b) := c2(b, a)` imply `c0(x, y) := c2(x, y)`.
+just like `c0(x, y) := c1(y, x)` and `c1(x, y) := c2(y, x)` implies `c0(x, y) := c2(x, y)`.
 
 # Chapter II - Redundancies (and incidentally also binders)
 So, we now have a rough understand how the slotted e-graphs functions.

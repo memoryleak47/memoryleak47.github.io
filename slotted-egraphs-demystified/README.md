@@ -1,8 +1,6 @@
 Slotted E-Graphs demystified
 ============================
 
-test
-
 In this blog post I attempt (!) to give the simplest explanation of slotted e-graphs that I can come up with.
 For that we'll start in Chapter I with some simplifying assumptions, and generalize the system to general slotted e-graphs in Chapters II and III.
 This blog post will focus more on conveying the idea, than about being precise in-terms of data structures.
@@ -35,6 +33,8 @@ c5 := c2[x := x] + c4[y := y]
 ```
 
 Note that as our slotted e-graph "came" from a conventional e-graph, we only use identity renamings `[x := x]` and `[y := y]` for now. But that will change soon enough.
+
+## Deduplication via Hashcons
 
 In general, E-graphs do not want to store the same term in different classes.
 In order to achieve this, there is the "hashcons", the global registry expressing in which e-class an e-node is contained.
@@ -82,6 +82,8 @@ c5 := c2[x := x] + c2[x := y]
 c3 := c1[x := y]
 c4 := c3[x := y]
 ```
+
+## The Unionfind
 
 We have now separated out, the bottom equations. They correspond to the "unionfind" in an e-graph.
 Whenever you merge two classes, one will be the "canonical" one (eg. `c1`), and the other one (eg. `c3`) will just point to that canonical class.

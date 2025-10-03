@@ -60,7 +60,7 @@ c0 := 2
 c1(x) := x
 c2(x) := c0 * c1(x) | c1(x) + c1(x)
 c4(y) := c0 * c1(y) | c1(y) + c1(y)
-c5(x, y) := c2[x := x] + c4(y)
+c5(x, y) := c2(x) + c4(y)
 
 c3(x) := c1(x)
 ```
@@ -108,4 +108,3 @@ It depends on whether the class has nodes like `x+y | y+x` or not.
 [^bij]: Technically, it would be "equal up to a bijective(!) renaming". As x-y and x-x should not be considered "equal up to renaming".
 [^grammar]: If you squint a bit, this looks like a context-free grammar. In general, E-Graphs can be seen as context-free grammars, where non-terminals correspond to e-classes, and production rules correspond to e-nodes. They just have the extra constraint that their non-terminals have no overlap. I'm sure people knew this since the dawn of time, but it's cool and I never see people use that connection somehow.
 [^one-var-eclass]: In general, you just have one variable e-class in a slotted e-graph. After all, all variables are equal up to renaming.
-[^subst]: The syntax `[x := y]` is inspired from substitutions. However it's important to note that both `x` and `y` are forced to be a variable (= Slot), so you can't substitute using arbitrary terms or e-classes with this. (However, extending that would get us into Knuth-bendix territory, which is what we are looking at a bit.)

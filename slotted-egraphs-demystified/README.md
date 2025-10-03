@@ -8,7 +8,7 @@ This blog post will focus more on conveying the idea, than about being precise i
 # Chapter 1 - From E-Graph to Slotted E-Graph
 First, what is an e-graph?
 An e-graph stores a bunch of terms and equations among them, by grouping equivalent terms into equivalence classes ("e-classes").
-For example, we might represent the term `2*x + 2*y` (plus some equations about it) like this:
+For example, we might represent the term `2*x + 2*y` (with some equations) like this:
 
 ```
 c0 := 2
@@ -19,7 +19,7 @@ c4 := c0 * c3 | c3 + c3
 c5 := c2 + c4
 ```
 
-Every `c0`, ..., `c5` corresponds to an "e-class", whereas the partial terms on the right (eg. `2 * c0`) correspond to e-nodes. [^grammar]
+Every `c0`, ..., `c5` corresponds to an "e-class", whereas the partial terms on the right (eg. `c0 * c1`) correspond to "e-nodes". [^grammar]
 In a slotted e-graph however, every e-class is parameterized by some variables (slots).
 For an e-class `c0` that contains a variable `x`. We write `c0[x := a]` to express this e-class where we insert the variable `a` into the slot `x`.[^subst]
 

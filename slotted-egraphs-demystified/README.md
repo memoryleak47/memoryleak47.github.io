@@ -30,6 +30,12 @@ c4(y) := c0 * c3(y) | c3(y) + c3(y)
 c5(x, y) := c2(x) + c4(y)
 ```
 
+It's worth pointing out that variable names chosen in every e-class have no particular meaning, and can be renamed at any point.
+We could for example re-define `c2` equivalently as:
+```
+c2(z) := c0 * c1(z) | c1(z) + c1(z)
+```
+
 ## Deduplication via Hashcons
 
 In general, E-graphs do not want to store the same term in different classes.

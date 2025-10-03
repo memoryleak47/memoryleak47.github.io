@@ -82,7 +82,7 @@ c4 := c3[x := y]
 ```
 
 We have now separated out, the bottom equations. They correspond to the "unionfind" in an e-graph.
-Whenever you merge two classes, one will be the "canonical" one (eg. `c0`), and the other one (eg. `c2`) will just point to that canonical class.
+Whenever you merge two classes, one will be the "canonical" one (eg. `c1`), and the other one (eg. `c3`) will just point to that canonical class.
 It's worth noting that in a slotted e-graph, these unionfind-"pointers" are annotated with renamings.
 This has an interesting implication: If you apply path compression in a slotted unionfind, you have to compose the renamings.
 

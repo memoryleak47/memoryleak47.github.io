@@ -11,23 +11,28 @@ An e-graph stores a bunch of terms and equations among them, by grouping equival
 For example, if we know that `2*x = x+x` and `2*y = y+y` and we want to represent the term `2*x + 2*y` it will result in the following e-graph:
 
 ```
-c0 := x
-c1 := 2*c0 | c0 + c0
-c2 := y
-c3 := 2*c2 | c2 + c2
-c4 := c1 + c3
+c0 := 2
+c1 := x
+c2 := 2*c1 | c1 + c1
+c3 := y
+c4 := 2*c3 | c3 + c3
+c5 := c2 + c4
 ```
 
-Every `c0`, ..., `c4` corresponds to an "e-class", whereas the partial terms on the right `x`, `2*c0`, ... correspond to e-nodes. [^grammar]
-In a slotted e-graph however, every e-class is parameterized by some variables (slots). For an e-class `c0` that contains a variable `x`. We write `c0[x := a]` to express this e-class where we insert `a` into `x`.
+Every `c0`, ..., `c5` corresponds to an "e-class", whereas the partial terms on the right (eg. `2*c0`) correspond to e-nodes. [^grammar]
+In a slotted e-graph however, every e-class is parameterized by some variables (slots).
+For an e-class `c0` that contains a variable `x`. We write `c0[x := a]` to express this e-class where we insert the variable `a` into the slot `x`.[^subst]
 
 ```
-c0 := x
-c1 := 2*c0[x := x] | c0[x := x] + c0[x := x]
-c2 := y
-c3 := 2*c2[y := y] | c2[y := y] + c2[y := y]
-c4 := c1[x := x] + c3[y := y]
+c0 := 2
+c1 := x
+c2 := 2*c1[x := x] | c1[x := x] + c1[x := x]
+c3 := y
+c4 := 2*c3[y := y] | c3[y := y] + c3[y := y]
+c5 := c2[x := x] + c4[y := y]
 ```
+
+Note that as our slotted e-graph "came" from a conventional e-graph, we only use identity renamings `[x := x]` and `[y := y]` for now. But that will change soon enough.
 
 Now, e-graphs do not want to store the same term in different classes.
 In order to achieve this, there is the "hashcons", the global registry expressing where a "node" is contained.
@@ -39,15 +44,15 @@ If two terms are equal up to renaming[^bij] of variables, they should be represe
 The problem now, is that two terms that are equal up to renaming can definitely still hash to different values. Think `hash("x+y") != hash("a+b")`, so we can't simply take the hashcons as before.
 In order to solve this issue, we are required to normalize our names in a sense that is compatible to hashing.
 
-For this, we rename all slots to numbers: we identify `0` with the left-most-occurring variable, then `1` for the next variable, etc.
-In this sense, both `x+y` and `a+b` would get the output `0+1`.[^shape]
+For this, we rename all slots to numbers: we identify `$0` with the left-most-occurring variable, then `$1` for the next variable, etc.
+In this sense, both `x+y` and `a+b` would get the output `$0 + $1`.[^shape]
 
-If we now populate our hashcons, we will notice that both `x` and `y` will result in the shape `0`, which means that we have to merge these classes.[^one-var-eclass]
+If we now populate our hashcons, we will notice that both `x` and `y` will result in the shape `$0`, which means that we have to merge these classes.[^one-var-eclass]
 
-To explain the reasoning why this works, we know that `c0 = x`, and further we can decompose `x = 0 [0 := x]`, where `[0 := x]` is a renaming that renames `0` to `x`.[^subst] This looks stupid, but will be helpful ^^
-Simlarly, we know `c2 = y = 0 [0 := y]`. And from `c0 = 0 [0 := x]` we can infer `c0 [x := 0] = 0` as our renamings are bijections.
-Similarly we get `c2 [y := 0] = 0` and thus `c0 [x := 0] = c2 [y := 0]`. Again by bijection, we obtain
-`c0 = c2 [y := 0] [0 := x] = c2 [y := x]`.
+To explain the reasoning why this works, we know that `c0 = x`, and further we can decompose `x = $0 [$0 := x]`.
+Simlarly, we know `c2 = y = $0 [$0 := y]`. And from `c0 = $0 [$0 := x]` we can infer `c0 [x := $0] = $0` as our renamings are bijections.
+Similarly we get `c2 [y := $0] = $0` and thus `c0 [x := $0] = c2 [y := $0]`. Again by bijection, we obtain
+`c0 = c2 [y := $0] [$0 := x] = c2 [y := x]`.
 So in short, after equating `c0` and `c2` using the "common node" 0, we obtain the equation `c0 = c2 [y := x]`.
 
 It's worth pointing out that we get an extra renaming `[y := x]` out of this process.
@@ -56,24 +61,25 @@ This is important in general, as there could be many slots on the left, and many
 So now, we can simplify our slotted e-graph:
 
 ```
-c0 := x
-c1 := 2*c0[x := x] | c0[x := x] + c0[x := x]
-c3 := 2*c0[x := y] | c0[x := y] + c0[x := y]
-c4 := c1[x := x] + c3[y := y]
+c0 := 2
+c1 := x
+c2 := 2*c1[x := x] | c1[x := x] + c1[x := x]
+c4 := 2*c1[x := y] | c1[x := y] + c1[x := y]
+c5 := c2[x := x] + c4[y := y]
 
-c2 := c0[x := y]
+c3 := c1[x := y]
 ```
 
-And then by again using the hashcons, `2*c0[x := x]` and `2*c0[x := y]` collide at the shape `2*c0[x := 0]`. And we similarly merge them.
-TODO: `2` looks like a normalized slot. Also: I did forget to hashcons it.
+And then by again using the hashcons, `2*c1[x := x]` and `2*c1[x := y]` collide at the shape `2*c1[x := $0]`. And we similarly merge them.
 
 ```
-c0 := x
-c1 := 2*c0[x := x] | c0[x := x] + c0[x := x]
-c4 := c1[x := x] + c1[x := y]
+c0 := 2
+c1 := x
+c2 := 2*c1[x := x] | c1[x := x] + c1[x := x]
+c5 := c2[x := x] + c2[x := y]
 
-c2 := c0[x := y]
-c3 := c2[x := y]
+c3 := c1[x := y]
+c4 := c3[x := y]
 ```
 
 We have now separated out, the bottom equations. They correspond to the "unionfind" in an e-graph.

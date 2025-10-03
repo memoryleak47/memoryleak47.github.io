@@ -21,7 +21,7 @@ c5 := c2 + c4
 
 Every `c0`, ..., `c5` corresponds to an "e-class", whereas the partial terms on the right (eg. `c0 * c1`) correspond to "e-nodes". [^grammar]
 In a slotted e-graph however, every e-class is parameterized by some variables (aka slots).
-For an e-class `c0` that contains a variable `x`. We write `c0[x := a]` to express this e-class where we insert the variable `a` into the variable `x`.[^subst]
+For an e-class `c0` that contains a variable `x`, We write `c0[x := y]` to express the class `c0` in which we rename `x` to `y`.[^subst]
 
 ```
 c0 := 2

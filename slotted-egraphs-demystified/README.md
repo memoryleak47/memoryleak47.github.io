@@ -72,7 +72,10 @@ c5(x, y) := c2(x) + c4(y)
 c3(x) := c1(x)
 ```
 
-And then by again using the hashcons, `c0 * c1(x)` and `c0 * c1(y)` collide at the shape `c0 * c1(0)`. And we similarly merge them.
+And then by again using the hashcons, `c0 * c1(x)` and `c0 * c1(y)` collide at the shape `c0 * c1(0)`.
+From that we infer the equation `c2(0) = c0 * c1(0) = c4(0)`, and replace `c4(0) = c2(0)`.
+
+[TODO: maybe find an example with more variables (and "cross-merges")].
 
 ```
 c0 := 2

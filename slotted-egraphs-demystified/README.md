@@ -13,9 +13,9 @@ For example, if we know that `2*x = x+x` and `2*y = y+y` and we want to represen
 ```
 c0 := 2
 c1 := x
-c2 := 2*c1 | c1 + c1
+c2 := c0*c1 | c1 + c1
 c3 := y
-c4 := 2*c3 | c3 + c3
+c4 := c0*c3 | c3 + c3
 c5 := c2 + c4
 ```
 
@@ -26,9 +26,9 @@ For an e-class `c0` that contains a variable `x`. We write `c0[x := a]` to expre
 ```
 c0 := 2
 c1 := x
-c2 := 2*c1[x := x] | c1[x := x] + c1[x := x]
+c2 := c0*c1[x := x] | c1[x := x] + c1[x := x]
 c3 := y
-c4 := 2*c3[y := y] | c3[y := y] + c3[y := y]
+c4 := c0*c3[y := y] | c3[y := y] + c3[y := y]
 c5 := c2[x := x] + c4[y := y]
 ```
 
@@ -63,19 +63,19 @@ So now, we can simplify our slotted e-graph:
 ```
 c0 := 2
 c1 := x
-c2 := 2*c1[x := x] | c1[x := x] + c1[x := x]
-c4 := 2*c1[x := y] | c1[x := y] + c1[x := y]
+c2 := c0*c1[x := x] | c1[x := x] + c1[x := x]
+c4 := c0*c1[x := y] | c1[x := y] + c1[x := y]
 c5 := c2[x := x] + c4[y := y]
 
 c3 := c1[x := y]
 ```
 
-And then by again using the hashcons, `2*c1[x := x]` and `2*c1[x := y]` collide at the shape `2*c1[x := $0]`. And we similarly merge them.
+And then by again using the hashcons, `c0*c1[x := x]` and `c0*c1[x := y]` collide at the shape `c0*c1[x := $0]`. And we similarly merge them.
 
 ```
 c0 := 2
 c1 := x
-c2 := 2*c1[x := x] | c1[x := x] + c1[x := x]
+c2 := c0*c1[x := x] | c1[x := x] + c1[x := x]
 c5 := c2[x := x] + c2[x := y]
 
 c3 := c1[x := y]

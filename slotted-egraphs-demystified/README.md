@@ -81,7 +81,7 @@ c2(x) := c0 * c1(x) | c1(x) + c1(x)
 c5(x, y) := c2(x) + c2(y)
 
 c3(x) := c1(x)
-c4(x) := c3(x)
+c4(x) := c2(x)
 ```
 
 ## The Unionfind

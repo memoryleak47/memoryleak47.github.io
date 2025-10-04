@@ -68,7 +68,7 @@ If you know that `c1(x) = x-x` gets simplified to `c1` without a parameter,
 then all "parent" e-classes (like `c4(x, y, z) = c1(x) + c2(y, z)`) may lose the dependency on this parameter aswell (like `c4(y, z) = c1 + c2(y, z)`).
 
 In an extreme case, when equating `x=y`, then the unique variable e-class `c0(x) := x` gets a redundant slot `c0 := _x_`,
-and all other e-classes lose all their slots as a consequence of this.
+and all other e-classes lose all their slots as a consequence of this. Then the slotted e-graph degenerates to a conventional e-graph.
 
 ## Edge cases
 Still just bijective renamings, so the "forall" of the redundant variable is restricted to not collide.

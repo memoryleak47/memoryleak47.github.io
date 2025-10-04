@@ -33,7 +33,6 @@ c1 := Zero | c0(_x_) - c0(_x_)
 
 Now, the parameterized e-class `c1` stopped being parameterized, however it now contains a *redundant variable* `_x_`.
 The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), ∀x }`.
-<!-- Hm... the x is technically not allowed to overlap other things, as we will see. -->
 
 Another way to argue that `c1` should not have any more paramters, is the fact that `c1(x) = c1(y)` *generally* implies that `c1` is a constant function.
 
@@ -43,8 +42,21 @@ When seeing the equation `x-x = y-y`, someone might have already figured out how
 Binders have a property called *alpha-equivalence*; for example `λx. x = λy. y` is a consequence of alpha-equivalence.
 It basically states that you are free to rename any bound variables in a term, and you will obtain an equivalent term.
 
-In short: `t = t[x := y]` if `x` is a bound variable, and `y` is fresh.
+<!-- In short: `t = t[x := y]` if `x` is a bound variable, and `y` is fresh. -->
 
+So, the trick to encode binders in slotted e-graphs is to just have a normal `λx. _` e-node type.[^lambda]
+And whenever some e-class `c(x, y, z)` contains an e-node `λx. _`,
+you derive `c(x, y, z) = c(x', y, z)` and let the redundancy system take it from there.
+
+## Rebuilding
+
+Redundancies do propagate upwards.
+Also, they are part of the unionfind.
+
+## Edge cases
+Still just bijective renamings, so the "forall" of the redundant variable is restricted to not collide.
+Hm... the x is technically not allowed to overlap other things, as we will see.
 
 [^constant]: I write "Zero" to prevent being ambiguous with the numeric variables `0, 1, 2` that we use in shapes.
 [^general]: This works generally. If you have an equation `t1 = t2`, where `x` comes up in `t1`, but not in `t2`, you can always derive `t1[x := y] = t2` and thus `t1 = t1[x := y]` (assuming `y` fresh).
+[^lambda]: One thing that is a bit special about the λ-node is that, next to the "variable" e-node, it's a node that takes not only subterms, but also a variable (the bound one) directly. If you don't do this, you get weird terms like `λ(x+0). _` when `x = x+0` (but there's also other ways to fix that).

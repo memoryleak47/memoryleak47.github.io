@@ -35,5 +35,14 @@ Now, the parameterized e-class `c1` stopped being parameterized, however it now 
 The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), ∀x }`.
 <!-- Hm... the x is technically not allowed to overlap other things, as we will see. -->
 
+## Binders
+
+When considering the equation `x-x = y-y`, someone might have guessed how this could relate to binders.
+Binders have a property called *alpha-equivalence*; for example `λx. x = λy. y` is a consequence of alpha-equivalence.
+It basically states that you are free to rename any bound variables in a term, and you will obtain an equivalent term.
+
+In short: `t = t[x := y]` if `x` is a bound variable, and `y` is fresh.
+
+
 [^constant]: I write "Zero" to prevent being ambiguous with the numeric variables `0, 1, 2` that we use in shapes.
 [^general]: This works generally. If you have an equation `t1 = t2`, where `x` comes up in `t1`, but not in `t2`, you can always derive `t1[x := y] = t2` and thus `t1 = t1[x := y]` (assuming `y` fresh).

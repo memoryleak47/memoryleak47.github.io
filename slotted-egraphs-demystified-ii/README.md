@@ -43,7 +43,7 @@ c1 := Zero | c0(_x_) - c0(_x_)
 ```
 
 Now, the parameterized e-class `c1` stopped being parameterized, however it now contains a *redundant variable* `_x_`.
-The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), ∀x }`.
+The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), ∀x }`, and thus we effectively express `c1 = {Zero, x-x, y-y, ...}` as desired!
 
 ## Binders
 

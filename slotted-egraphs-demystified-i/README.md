@@ -42,6 +42,9 @@ One can visualize a parameterized e-class (eg. `c3`) as a function, that takes i
 - `c3(x, y) = {-a | a ∈ c2(x, y) } ∪ { a - b | a ∈ c1(y), b ∈ c0(x)}`
 
 These parameterized e-class functions recursively call each other to build up all the terms they represent.[^termination]
+Thus, after some function inlining we end up with:
+
+- `c3(x, y) = { -(x - y), y - x }`
 
 <!-- It's worth pointing out that a parameterized e-class (`c0`) spans infinitely many disjoint equivalence classes: -->
 <!-- `c0(a)`, `c0(b)`, ...; one e-class per "application" of the parameterized e-class.[^groups] -->

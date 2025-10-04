@@ -91,7 +91,7 @@ c3(x, y) := - c2(x, y) | c0(y) - c0(x)
 c1(0) := c0(0)
 ```
 
-We remember how we eliminated `c1` using this final equation `c1(0) := c0(0)`. We will clarify this more in [#Unionfind].
+We remember how we eliminated `c1` using this final equation `c1(0) := c0(0)`. We will clarify this more in [#unionfind].
 
 ### Non-trivial equations
 

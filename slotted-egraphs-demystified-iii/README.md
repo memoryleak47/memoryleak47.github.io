@@ -1,6 +1,6 @@
 # This is not written yet! WIP
 
-# Chapter III - Symmetries
+## Chapter III - Symmetries
 The next (and last) annoying case is that we might learn that `x+y = y+x`.
 This is weird, as both sides of the equation are equal up to renaming.
 We might try to to "just store them as normal nodes":

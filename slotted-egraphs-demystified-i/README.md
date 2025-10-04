@@ -13,7 +13,7 @@ Interestingly, binders just "fall out for free" in Chapter II as a consequence o
 
 I intend to ignore e-matching and proof production, as they aren't really remarkable for slotted e-graphs -- but tedious.
 
-# Chapter I - From E-Graph to Slotted E-Graph
+## Chapter I - From E-Graph to Slotted E-Graph
 First, what is an e-graph?
 An e-graph stores a bunch of terms and equations among them, by grouping equivalent terms into equivalence classes ("e-classes").
 For example, we might represent the equal terms `-(x-y) = (y-x)` as follows:

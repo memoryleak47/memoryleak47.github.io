@@ -5,7 +5,7 @@ Slotted E-Graphs demystified
 - [[Chapter II]](https://memoryleak47.github.io/slotted-egraphs-demystified-ii/).
 - [Chapter III](https://memoryleak47.github.io/slotted-egraphs-demystified-iii/).
 
-# Chapter II - Redundancies (and incidentally also binders)
+## Chapter II - Redundancies (and incidentally also binders)
 
 Now it's time to lift up the curtain a bit more, and consider what happens when we equate `x-x = Zero`.[^constant]
 This equation has an interesting property, the left-hand-side refers to a variable `x`, which does not occur in the right-hand side.

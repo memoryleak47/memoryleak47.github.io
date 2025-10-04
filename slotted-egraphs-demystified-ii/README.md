@@ -35,6 +35,8 @@ Now, the parameterized e-class `c1` stopped being parameterized, however it now 
 The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), ∀x }`.
 <!-- Hm... the x is technically not allowed to overlap other things, as we will see. -->
 
+Another way to argue that `c1` should not have any more paramters, is the fact that `c1(x) = c1(y)` *generally* implies that `c1` is a constant function.
+
 ## Binders
 
 When seeing the equation `x-x = y-y`, someone might have already figured out how this could relate to binders.

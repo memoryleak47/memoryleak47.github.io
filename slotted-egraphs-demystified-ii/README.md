@@ -49,7 +49,7 @@ Notice that this semantics is exactly the union of all these e-classes `c1(x)`, 
 Thus, in typical e-graph fashion, we merged a couple of overlapping e-classes into one.
 
 And that's about it. Redundant variables are an extension that allow you to handle equations,
-where both sides might disagree on the set of variables. Whenever `x` comes up on one side, but not the other, it will become a redundant slot.
+where the left, and the right-hand-side disagree on the set of variables. Whenever `x` comes up on one side, but not the other, it will become a redundant slot.
 
 Finally, one thing to keep in mind is that the shape computation does not distinguish between redundant variables and normal variables.
 

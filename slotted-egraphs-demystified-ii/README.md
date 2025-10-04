@@ -30,7 +30,7 @@ This is not how equivalence classes work! If they overlap, they have to be the s
 
 This effectively means that the slotted e-graph did not internalize the fact `x-x = y-y` (or `c1(x) = c1(y)`), that we had just proven before.
 
-## Redundant Variables
+### Redundant Variables
 
 The property `c1(x) = c1(y)` has a useful characterization, it describes exactly _constant functions_.
 We can interpret this as a hint that the parameter `x` of `c1(x)` should probably go away.
@@ -54,7 +54,7 @@ where the left, and the right-hand-side disagree on the set of variables. Whenev
 Finally, one thing to keep in mind is that the shape computation does not distinguish between redundant variables and normal variables.
 Both kinds of variables will just be renamed to `0, 1, ...` as explained prior.
 
-## Binders
+### Binders
 
 When seeing the equation `x-x = y-y`, someone might have already figured out how this could relate to binders.
 Binders have a property called *alpha-equivalence*; for example `λx. x = λy. y` is a consequence of alpha-equivalence.
@@ -66,7 +66,7 @@ So, the trick to encode binders in slotted e-graphs is to just have a normal `λ
 And whenever some e-class `c(x, y, z)` contains an e-node `λx. _`,
 you derive `c(x, y, z) = c(x', y, z)` and let the redundancy system take it from there.
 
-## Rebuilding
+### Rebuilding
 
 As noted in "Chapter I", learning new equations and simplifying accordingly can sometimes (by congruence) yield new equations.
 A similar thing happens with redundant variables.
@@ -76,7 +76,7 @@ then all "parent" e-classes (like `c4(x, y, z) = c1(x) + c2(y, z)`) may lose the
 In an extreme case, when equating `x=y`, then the unique variable e-class `c0(x) := x` gets a redundant variable `c0 := _x_`,
 and all other e-classes lose all their variables as a consequence of this. Then the slotted e-graph degenerates to a conventional e-graph.
 
-## Freshness and bijectiveness
+### Freshness and bijectiveness
 
 In general, the equational reasoning underlying slotted e-graphs is very related to nominal techniques.
 One consequence of that, which we mentioned along the way, was that all our renamings are "bijective".

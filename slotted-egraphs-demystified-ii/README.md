@@ -16,7 +16,7 @@ And thus it follows `x-x = y-y`.[^general]
 
 <!-- This new equation `x-x = y-y` is of interest to us, as both sides of the equation are equal up to renaming. -->
 
-If we were to express this situation in a slotted e-graph, we might start here:
+If we were to express this situation in a "Chapter I" slotted e-graph, we might attempt this:
 
 ```
 c0(x) := x
@@ -26,10 +26,16 @@ c1(x) := Zero | c0(x) - c0(x)
 But if we recall the "semantics" `c1(x) = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x) }`, we notice a problem.
 The e-classes `c1(x)` and `c1(y)` overlap in `Zero`, but are not the same.
 For example `c1(x)` contains `x-x`, but `c1(y)` does not.
-This is not how equivalence classes work. If they overlap, they have to be the same!
+This is not how equivalence classes work! If they overlap, they have to be the same!
+
 This effectively means that the slotted e-graph did not internalize the fact `x-x = y-y` (or `c1(x) = c1(y)`), that we had just proven before.
 
-In order to address this, we require *redundant variables*:
+## Redundant Variables
+
+The property `c1(x) = c1(y)` has an important mathematical characterization, it describes exactly _constant functions_.
+We can interpret this as a mathematical hint that the parameter `x` should probably go away.
+
+In order to get rid of the parameter `x`, while still being able to express `x-x`, `y-y`, ..., we require *redundant variables*:
 
 ```
 c0(x) := x
@@ -38,8 +44,6 @@ c1 := Zero | c0(_x_) - c0(_x_)
 
 Now, the parameterized e-class `c1` stopped being parameterized, however it now contains a *redundant variable* `_x_`.
 The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), ∀x }`.
-
-Another way to argue that `c1` should not have any more paramters, is the fact that `c1(x) = c1(y)` *generally* implies that `c1` is a constant function.
 
 ## Binders
 

@@ -76,7 +76,7 @@ In general, the equational reasoning underlying slotted e-graphs is very related
 One consequence of that, which we mentioned along the way, was that all our renamings are "bijective".
 Implying that we never rename two originally different variables to the same new variable.[^reason]
 
-To make an example: `x-y` and `x-x` are entirely unrelated e-nodes the slotted setting.
+To make an example: `x-y` and `x-x` are entirely unrelated e-nodes in the slotted setting.
 There is no bijective renaming one can apply to go from one to the other, in either direction.
 
 This is of particular relevance for redundant slots, as their semantics is explicitly based on freshness.

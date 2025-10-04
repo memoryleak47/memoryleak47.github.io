@@ -7,6 +7,8 @@ and in Chapter II we will see what happens if you dare to equate `x-x = 0`;
 and finally in Chapter III we will see what happens if you dare to equate `x+y = y+x`.
 Interestingly, binders just "fall out for free" in Chapter II as a consequence of redundancies, so they do not come up in Chapter I.
 
+I intend to ignore e-matching and proof production, as they aren't really remarkable for slotted e-graphs -- but tedious.
+
 # Chapter I - From E-Graph to Slotted E-Graph
 First, what is an e-graph?
 An e-graph stores a bunch of terms and equations among them, by grouping equivalent terms into equivalence classes ("e-classes").
@@ -43,6 +45,9 @@ These parameterized e-class functions recursively call each other to build up al
 As parameterized e-classes can be seen as functions, the variable names (i.e. function parameters) chosen in every e-class have no particular meaning, and can be renamed at any point.
 We could for example re-define `c2` equivalently as `c2(f, d) := c0(f) - c1(d)` if we wanted to.
 This is one crucial property of variables: The names you choose do not matter!
+
+As a consequence, all equations (like `c2(x, y) := c0(x) - c1(y)` or `-(x-y) = (y-x)`) can always be understood universally-quantified in terms of the variables.
+Reasoning: If we know that `-(x-y) = (y-x)` holds for "any variables", then it has to hold for "all variables"; as no variables have any special properties (they are just names).
 
 ### Deduplication via Hashcons and Shapes
 

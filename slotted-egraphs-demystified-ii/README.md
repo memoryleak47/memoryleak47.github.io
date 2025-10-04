@@ -49,7 +49,7 @@ Notice that this semantics is exactly the union of all these e-classes `c1(x)`, 
 Thus, in typical e-graph fashion, we merged a couple of overlapping e-classes into one.
 
 And that's about it. Redundant variables are an extension that allow you to handle equations,
-where the left, and the right-hand-side disagree on the set of variables. Whenever `x` comes up on one side, but not the other, it will become a redundant slot.
+where the left, and the right-hand-side disagree on the set of variables. Whenever `x` comes up on one side, but not the other, it will become a redundant variable.
 
 Finally, one thing to keep in mind is that the shape computation does not distinguish between redundant variables and normal variables.
 Both kinds of variables will just be renamed to `0, 1, ...` as explained prior.
@@ -73,7 +73,7 @@ A similar thing happens with redundant variables.
 If you know that `c1(x) = x-x` gets simplified to `c1` without a parameter,
 then all "parent" e-classes (like `c4(x, y, z) = c1(x) + c2(y, z)`) may lose the dependency on this parameter aswell (like `c4(y, z) = c1 + c2(y, z)`).
 
-In an extreme case, when equating `x=y`, then the unique variable e-class `c0(x) := x` gets a redundant slot `c0 := _x_`,
+In an extreme case, when equating `x=y`, then the unique variable e-class `c0(x) := x` gets a redundant variable `c0 := _x_`,
 and all other e-classes lose all their variables as a consequence of this. Then the slotted e-graph degenerates to a conventional e-graph.
 
 ## Freshness and bijectiveness

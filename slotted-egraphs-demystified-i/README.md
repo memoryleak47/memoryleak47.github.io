@@ -54,6 +54,7 @@ We could for example re-define `c2` equivalently as `c2(f, d) := c0(f) - c1(d)` 
 This is one crucial property of variables: The names you choose do not matter!
 
 As a consequence, all equations (like `c2(x, y) := c0(x) - c1(y)` or `-(x-y) = (y-x)`) can always be understood universally-quantified in terms of the variables.
+<!-- [TODO: universally quantified doesn't fully cut it. Then f(x, y) = g(x, y) would imply f(x, x) = g(x, x)]. -->
 Reasoning: If we know that `-(x-y) = (y-x)` holds for "any variables", then it has to hold for "all variables"; as no variables have any special properties (they are just names).
 
 ### Deduplication via Hashcons and Shapes

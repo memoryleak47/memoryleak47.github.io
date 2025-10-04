@@ -1,6 +1,10 @@
 Slotted E-Graphs demystified
 ============================
 
+- [[Chapter I]](https://memoryleak47.github.io/slotted-egraphs-demystified-i/).
+- [Chapter II](https://memoryleak47.github.io/slotted-egraphs-demystified-ii/).
+- [Chapter III](https://memoryleak47.github.io/slotted-egraphs-demystified-iii/).
+
 In this blog post I attempt to give a more concise and simple explanation of slotted e-graphs, than the one from our paper.
 For that we'll start in Chapter I with a simplified version of slotted e-graphs;
 and in Chapter II we will see what happens if you dare to equate `x-x = 0`;

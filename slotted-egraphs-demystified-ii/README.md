@@ -1,4 +1,9 @@
-# This is not written yet! WIP
+Slotted E-Graphs demystified
+============================
+
+- [Chapter I](https://memoryleak47.github.io/slotted-egraphs-demystified-i/).
+- [[Chapter II]](https://memoryleak47.github.io/slotted-egraphs-demystified-ii/).
+- [Chapter III](https://memoryleak47.github.io/slotted-egraphs-demystified-iii/).
 
 # Chapter II - Redundancies (and incidentally also binders)
 

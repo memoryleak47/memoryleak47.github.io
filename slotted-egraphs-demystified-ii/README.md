@@ -62,8 +62,13 @@ you derive `c(x, y, z) = c(x', y, z)` and let the redundancy system take it from
 
 ## Rebuilding
 
-Redundancies do propagate upwards.
-Also, they are part of the unionfind.
+As noted in "Chapter I", learning new equations and simplifying accordingly can sometimes (by congruence) yield new equations.
+A similar thing happens with redundant variables.
+If you know that `c1(x) = x-x` gets simplified to `c1` without a parameter,
+then all "parent" e-classes (like `c4(x, y, z) = c1(x) + c2(y, z)`) may lose the dependency on this parameter aswell (like `c4(y, z) = c1 + c2(y, z)`).
+
+In an extreme case, when equating `x=y`, then the unique variable e-class `c0(x) := x` gets a redundant slot `c0 := _x_`,
+and all other e-classes lose all their slots as a consequence of this.
 
 ## Edge cases
 Still just bijective renamings, so the "forall" of the redundant variable is restricted to not collide.

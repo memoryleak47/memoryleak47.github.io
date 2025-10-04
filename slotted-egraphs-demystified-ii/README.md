@@ -37,7 +37,7 @@ The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), �
 
 ## Binders
 
-When considering the equation `x-x = y-y`, someone might have guessed how this could relate to binders.
+When seeing the equation `x-x = y-y`, someone might have already figured out how this could relate to binders.
 Binders have a property called *alpha-equivalence*; for example `λx. x = λy. y` is a consequence of alpha-equivalence.
 It basically states that you are free to rename any bound variables in a term, and you will obtain an equivalent term.
 

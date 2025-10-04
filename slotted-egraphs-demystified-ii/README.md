@@ -5,7 +5,7 @@
 Now it's time to lift up the curtain a bit more, and consider what happens when we equate `x-x = Zero`.[^constant]
 This equation has an interesting property, the left-hand-side refers to a variable `x`, which does not occur in the right-hand side.
 
-Recall that in any equation, we are always free to bijectively rename all variables: If a property holds for some set of variables, the same property holds for all variables -- no variable is special.
+Recall that in any equation, we are always free to bijectively rename all variables: If a property holds for some variables, the property holds for all variables -- no variable is special.
 Thus from `x-x = Zero` we can directly infer `y-y = Zero`.
 And thus it follows `x-x = y-y`.[^general]
 

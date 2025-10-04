@@ -5,8 +5,8 @@ Slotted E-Graphs demystified
 - [Chapter II](https://memoryleak47.github.io/slotted-egraphs-demystified-ii/).
 - [Chapter III](https://memoryleak47.github.io/slotted-egraphs-demystified-iii/).
 
-In this blog post I attempt to give a more concise and simple explanation of slotted e-graphs, than the one from our paper.
-For that we'll start in Chapter I with a simplified version of slotted e-graphs;
+In this blog post I attempt to give a simple and concise explanation of slotted e-graphs.
+For that we'll start in Chapter I with a basic version,
 and in Chapter II we will see what happens if you dare to equate `x-x = 0`;
 and finally in Chapter III we will see what happens if you dare to equate `x+y = y+x`.
 Interestingly, binders just "fall out for free" in Chapter II as a consequence of redundancies, so they do not come up in Chapter I.

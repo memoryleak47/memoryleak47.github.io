@@ -52,6 +52,7 @@ And that's about it. Redundant variables are an extension that allow you to hand
 where the left, and the right-hand-side disagree on the set of variables. Whenever `x` comes up on one side, but not the other, it will become a redundant slot.
 
 Finally, one thing to keep in mind is that the shape computation does not distinguish between redundant variables and normal variables.
+Both kinds of variables will just be renamed to `0, 1, ...` as explained prior.
 
 ## Binders
 

@@ -32,8 +32,8 @@ This effectively means that the slotted e-graph did not internalize the fact `x-
 
 ## Redundant Variables
 
-The property `c1(x) = c1(y)` has an important mathematical characterization, it describes exactly _constant functions_.
-We can interpret this as a mathematical hint that the parameter `x` should probably go away.
+The property `c1(x) = c1(y)` has a useful characterization, it describes exactly _constant functions_.
+We can interpret this as a hint that the parameter `x` should probably go away.
 
 In order to get rid of the parameter `x`, while still being able to express `x-x`, `y-y`, ..., we require *redundant variables*:
 
@@ -47,6 +47,11 @@ The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), x 
 
 Notice that this semantics is exactly the union of all these e-classes `c1(x)`, `c1(y)`, ... that were overlapping but not equivalent in the previously attempted semantics.
 Thus, in typical e-graph fashion, we merged a couple of overlapping e-classes into one.
+
+And that's about it. Redundant variables are an extension that allow you to handle equations,
+where both sides might disagree on the set of variables. Whenever `x` comes up on one side, but not the other, it will become a redundant slot.
+
+Finally, one thing to keep in mind is that the shape computation does not distinguish between redundant variables and normal variables.
 
 ## Binders
 
@@ -68,7 +73,7 @@ If you know that `c1(x) = x-x` gets simplified to `c1` without a parameter,
 then all "parent" e-classes (like `c4(x, y, z) = c1(x) + c2(y, z)`) may lose the dependency on this parameter aswell (like `c4(y, z) = c1 + c2(y, z)`).
 
 In an extreme case, when equating `x=y`, then the unique variable e-class `c0(x) := x` gets a redundant slot `c0 := _x_`,
-and all other e-classes lose all their slots as a consequence of this. Then the slotted e-graph degenerates to a conventional e-graph.
+and all other e-classes lose all their variables as a consequence of this. Then the slotted e-graph degenerates to a conventional e-graph.
 
 ## Freshness and bijectiveness
 
@@ -79,7 +84,7 @@ Implying that we never rename two originally different variables to the same new
 To make an example: `x-y` and `x-x` are entirely unrelated e-nodes in the slotted setting.
 There is no bijective renaming one can apply to go from one to the other, in either direction.
 
-This is of particular relevance for redundant slots, as their semantics is explicitly based on freshness.
+This is of particular relevance for redundant variables, as their semantics is explicitly based on freshness.
 For that, let's consider the example `λx. λy. x+y`:
 
 ```

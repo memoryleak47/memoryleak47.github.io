@@ -101,8 +101,8 @@ When we look at the semantics of `c2(x)`, we obtain
 
 This "freshness" constraint prevents `c2(x)` from containing `λx. x+x`. Great! Crisis averted.
 
-Finally, I want to point out that "x fresh" in this context does not mean "globally fresh",
-but instead: `x` is distinct from all other variables explicitly mentioned in this equation.
+Finally, I want to point out that "y fresh" does not mean "globally fresh",
+but instead: `y` is distinct from all other variables explicitly mentioned in this equation.
 
 [^constant]: I write "Zero" to prevent being ambiguous with the numeric variables `0, 1, 2` that we use in shapes.
 [^general]: This works generally. If you have an equation `t1 = t2`, where `x` comes up in `t1`, but not in `t2`, you can always derive `t1[x := y] = t2` and thus `t1 = t1[x := y]` (assuming `y` fresh).

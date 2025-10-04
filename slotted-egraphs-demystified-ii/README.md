@@ -9,19 +9,31 @@ Recall that in any equation, we are always free to bijectively rename all variab
 Thus from `x-x = Zero` we can directly infer `y-y = Zero`.
 And thus it follows `x-x = y-y`.[^general]
 
-And we want to apply `a = c(x)`. As we are free to rename the variables in our equations, we can also infer `a = c(y)`.
-And thus `c(x) = c(y)` from it.
+This new equation `x-x = y-y` is of interest to us, as both sides of the equation are equal up to renaming.
 
-
-In a slotted e-graph this would mean
+If we were to express this situation in a slotted e-graph, we might start here:
 
 ```
-a := Zero
-b(x) := x
-c(x) := b(x) - b(x)
+c0(x) := x
+c1(x) := Zero | c0(x) - c0(x)
 ```
 
-In other words, one can argue that the e-class `c(x)` contains the e-node `Zero`, whereas `c(y)` also contains the e-node `Zero`, and thus `c(x) = c(y)`.
+Recall the "semantics" `c1(x) = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x) }`
+But this has a few weird properties.
+First: The e-classes `c1(x)` and `c1(y)` overlap in `Zero`, but are not the same. For example `c1(x)` contains `x-x`, but `c1(y)` does not.
+This is not how equivalence classes work. If they overlap, they have to be the same!
+This effectively means that the slotted e-graph did not internalize the fact `c1(x) = c1(y)` that we had proven before.
+
+In order to address this, we require a new "feature": redundancies:
+
+```
+c0(x) := x
+c1 := Zero | c0(_x_) - c0(_x_)
+```
+
+The parameterized e-class `c1` stopped being parameterized, however it contains a *redundant variable* `_x_`.
+The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), ∀x }`.
+<!-- Hm... the x is technically not allowed to overlap other things, as we will see. -->
 
 [^constant]: I write "Zero" to prevent being ambiguous with the numeric variables `0, 1, 2` that we use in shapes.
 [^general]: This works generally. If you have an equation `t1 = t2`, where `x` comes up in `t1`, but not in `t2`, you can always derive `t1[x := y] = t2` and thus `t1 = t1[x := y]` (assuming `y` fresh).

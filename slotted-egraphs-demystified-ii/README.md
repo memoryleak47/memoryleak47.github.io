@@ -70,7 +70,7 @@ then all "parent" e-classes (like `c4(x, y, z) = c1(x) + c2(y, z)`) may lose the
 In an extreme case, when equating `x=y`, then the unique variable e-class `c0(x) := x` gets a redundant slot `c0 := _x_`,
 and all other e-classes lose all their slots as a consequence of this. Then the slotted e-graph degenerates to a conventional e-graph.
 
-## Freshness
+## Freshness and bijectiveness
 
 In general, the equational reasoning underlying slotted e-graphs is very related to nominal techniques.
 One consequence of that, which we mentioned along the way, was that all our renamings are "bijective".

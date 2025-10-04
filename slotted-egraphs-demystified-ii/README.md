@@ -33,7 +33,7 @@ This effectively means that the slotted e-graph did not internalize the fact `x-
 ## Redundant Variables
 
 The property `c1(x) = c1(y)` has a useful characterization, it describes exactly _constant functions_.
-We can interpret this as a hint that the parameter `x` should probably go away.
+We can interpret this as a hint that the parameter `x` of `c1(x)` should probably go away.
 
 In order to get rid of the parameter `x`, while still being able to express `x-x`, `y-y`, ..., we require *redundant variables*:
 

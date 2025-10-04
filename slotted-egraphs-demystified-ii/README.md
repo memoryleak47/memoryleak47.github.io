@@ -91,7 +91,7 @@ c3 := λ_x_. c2(_x_)
 
 When we look at the semantics of `c2(x)`, we obtain
 
-- `c2(x) = { λy. a | a ∈ c1(x, y), x fresh }`
+- `c2(x) = { λy. a | a ∈ c1(x, y), y fresh }`
 
 This "freshness" constraint prevents `c2(x)` from containing `λx. x+x`. Great! Crisis averted.
 

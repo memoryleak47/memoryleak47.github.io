@@ -103,4 +103,4 @@ but instead: x is distinct from all other variables explicitly mentioned in this
 [^general]: This works generally. If you have an equation `t1 = t2`, where `x` comes up in `t1`, but not in `t2`, you can always derive `t1[x := y] = t2` and thus `t1 = t1[x := y]` (assuming `y` fresh).
 [^lambda]: One thing that is a bit special about the λ-node is that, next to the "variable" e-node, it's a node that takes not only subterms, but also a variable (the bound one) directly. If you don't do this, you get weird terms like `λ(x+0). _` when `x = x+0` (but there's also other ways to fix that).
 [^reason]: You might also have wondered why no e-classes ever contain nodes like `c2(x, x)`: This would correspond to a non-bijective renaming, and is thus forbidden.
-[^fresh]: What exactly "fresh" means will be explained in [#freshness](Freshness).
+[^fresh]: What exactly "fresh" means will be explained in [Freshness](#freshness).

@@ -43,7 +43,7 @@ c1 := Zero | c0(_x_) - c0(_x_)
 ```
 
 Now, the parameterized e-class `c1` stopped being parameterized, however it now contains a *redundant variable* `_x_`.
-The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), x ∈ Var }`, and thus we effectively express `c1 = {Zero, x-x, y-y, ...}` as desired!
+The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), x fresh }`, and thus we effectively express `c1 = {Zero, x-x, y-y, ...}` as desired![^fresh]
 
 Notice that this semantics is exactly the union of all these e-classes `c1(x)`, `c1(y)`, ... that were overlapping but not equivalent in the previously attempted semantics.
 Thus, in typical e-graph fashion, we merged a couple of overlapping e-classes into one.
@@ -70,10 +70,37 @@ then all "parent" e-classes (like `c4(x, y, z) = c1(x) + c2(y, z)`) may lose the
 In an extreme case, when equating `x=y`, then the unique variable e-class `c0(x) := x` gets a redundant slot `c0 := _x_`,
 and all other e-classes lose all their slots as a consequence of this. Then the slotted e-graph degenerates to a conventional e-graph.
 
-## Edge cases
-Still just bijective renamings, so the "forall" of the redundant variable is restricted to not collide.
-Hm... the x is technically not allowed to overlap other things, as we will see.
+## Freshness
+
+In general, the equational reasoning underlying slotted e-graphs is very related to nominal techniques.
+One consequence of that, which we mentioned along the way, was that all our renamings are "bijective".
+Implying that we never rename two originally different variables to the same new variable.[^reason]
+
+To make an example: `x-y` and `x-x` are entirely unrelated e-nodes the slotted setting.
+There is no bijective renaming one can apply to go from one to the other, in either direction.
+
+This is of particular relevance for redundant slots, as their semantics is explicitly based on freshness.
+For that, let's consider the example `λx. λy. x+y`:
+
+```
+c0(x) := x
+c1(x,y) := x+y
+c2(x) := λ_y_. c1(x, _y_)
+c3 := λ_x_. c2(_x_)
+```
+
+When we look at the semantics of `c2(x)`, we obtain
+
+- `c2(x) = { λy. a | a ∈ c1(x, y), x fresh }`
+
+This "freshness" constraint prevents `c2(x)` from containing `λx. x+x`. Great! Crisis averted.
+
+I want to point out that "x fresh" in this context does not mean "globally fresh",
+but instead: x is distinct from all other variables explicitly mentioned in this equation.
+
 
 [^constant]: I write "Zero" to prevent being ambiguous with the numeric variables `0, 1, 2` that we use in shapes.
 [^general]: This works generally. If you have an equation `t1 = t2`, where `x` comes up in `t1`, but not in `t2`, you can always derive `t1[x := y] = t2` and thus `t1 = t1[x := y]` (assuming `y` fresh).
 [^lambda]: One thing that is a bit special about the λ-node is that, next to the "variable" e-node, it's a node that takes not only subterms, but also a variable (the bound one) directly. If you don't do this, you get weird terms like `λ(x+0). _` when `x = x+0` (but there's also other ways to fix that).
+[^reason]: You might also have wondered why no e-classes ever contain nodes like `c2(x, x)`: This would correspond to a non-bijective renaming, and is thus forbidden.
+[^fresh]: What exactly "fresh" means will be explained in [#Freshness].

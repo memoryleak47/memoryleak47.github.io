@@ -42,7 +42,7 @@ c0(x) := x
 c1 := Zero | c0(_x_) - c0(_x_)
 ```
 
-Now, the parameterized e-class `c1` stopped being parameterized, however it now contains a *redundant variable* `_x_`.
+Now, the parameterized e-class `c1` stopped being parameterized[^alternative], however it now contains a *redundant variable* `_x_`.
 The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), x fresh }`[^fresh], and thus we effectively express `c1 = {Zero, x-x, y-y, ...}` as desired!
 
 Notice that this semantics is exactly the union of all these e-classes `c1(x)`, `c1(y)`, ... that were overlapping but not equivalent in the previously attempted semantics.
@@ -108,4 +108,5 @@ but instead: `x` is distinct from all other variables explicitly mentioned in th
 [^general]: This works generally. If you have an equation `t1 = t2`, where `x` comes up in `t1`, but not in `t2`, you can always derive `t1[x := y] = t2` and thus `t1 = t1[x := y]` (assuming `y` fresh).
 [^lambda]: One thing that is a bit special about the λ-node is that, next to the "variable" e-node, it's a node that takes not only subterms, but also a variable (the bound one) directly. If you don't do this, you get weird terms like `λ(x+0). _` when `x = x+0` (but there's also other ways to fix that).
 [^reason]: You might also have wondered why no e-classes ever contain nodes like `c2(x, x)`: This would correspond to a non-bijective renaming, and is thus forbidden.
+[^alternative]: If you don't like changing the arity of symbols from `c1(x)` to just `c1`: In the implementation we instead declare a new e-class `c2`, and add the unionfind equation `c1(x) := c2`, replacing each occurrence of `c1(x)` with `c2`.
 [^fresh]: What exactly "fresh" means will be explained in [Freshness](#freshness).

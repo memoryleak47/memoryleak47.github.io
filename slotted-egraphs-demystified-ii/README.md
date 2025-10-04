@@ -43,7 +43,7 @@ c1 := Zero | c0(_x_) - c0(_x_)
 ```
 
 Now, the parameterized e-class `c1` stopped being parameterized, however it now contains a *redundant variable* `_x_`.
-The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), ∀x }`, and thus we effectively express `c1 = {Zero, x-x, y-y, ...}` as desired!
+The semantics of this is `c1 = {Zero} ∪ { a - b | a ∈ c0(x), b ∈ c0(x), x ∈ Var }`, and thus we effectively express `c1 = {Zero, x-x, y-y, ...}` as desired!
 
 Notice that this semantics is exactly the union of all these e-classes `c1(x)`, `c1(y)`, ... that were overlapping but not equivalent in the previously attempted semantics.
 Thus, in typical e-graph fashion, we merged a couple of overlapping e-classes into one.
